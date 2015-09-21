@@ -129,6 +129,8 @@ We talked about how a transistor is built from metal and Silicon, a semi-conduct
 #### Integrated Circuits
 We briefly talked about how a novel photographic process lead to entire electric circuits on a tiny piece of Silicon (a "chip" of silicon). We looked at some, packaged in black plastic with a lot of metal legs, giving them the appearance of a bug.
 
+- [historic film: Fairchild Semiconductor, inventor of the IC](https://www.youtube.com/watch?v=z47Gv2cdFtA)
+
 #### Time Sharing
 We talked about that the first computers were so bug and expensive that universities or companies could only afford one of them (if at all). We talked about how users had to wait a long time before the computer would run their programs. Cpmputing time was the limiting factor. Usually, depending on how important you were, you could hope that your program would maybe run sometime during the night and you would pick up the printed result (usually an error message) the next day. The idea of time sharing is to divide the computer's time into very short time slices and run a different user's program in each of those slices. By connecting multiple terminals to the same computer, users could work interactively and at the same time with one computer.
 
