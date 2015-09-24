@@ -6,6 +6,10 @@ she.codes kitchen sessions Berlin
 
 Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 
+[Session 1]()
+[Session 2]()
+
+
 # Session #2 2015-9-24
 
 # Session 2
