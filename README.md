@@ -6,7 +6,104 @@ she.codes kitchen sessions Berlin
 
 Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 
-## Session #1 2015-9-17
+# Session #2 2015-9-24
+
+# Session 2
+
+
+## The relation between binary, octal and hexadecimal
+We talked about how it is much easier to convert between binary and octal, or binary and hexadecimal than it is to convert between decimal and ... well, really everything else. It is our so familiar decimal system that is the outsider here. The reason for this: 3bits fit exactly into one octal digit and four bits fit exactly into one hexadecimal digit. 
+>There are 8 ways to arrange 3 bits and octal has a symbol for each one of them. There are 16 ways to arrange 4 bits and hexadecimal has a symbol for each one.
+
+## base60 and base64
+We also talked about base 60 (used in clocks, like 1:43:32, meaning one hour, 43 minutes, 32 seconds. This is a base60 system where each symbol consists of two decimal digits. This is totally sick if you think about it. Certainly more complex than anything you find in the tidy world of programming!
+There's a much less familiar one: base64, the biggest number system we can do using only visible characters from the ASCII table. It is the most compact way to transfer a very large sets of bits over a traditional 7bit telegraphy line.
+We talked about how this could be used for a telegraphy-age telefax, a thing that actually did exist! We talked about the _stack of encodings_ that is necessary to make this work:
+- Pixels are encoded as ones and zeros
+- six of them are grouped an their binary value is used to map them to a character in the set of characters used by base64 (2^6 = 64)
+- these characters (all printable ASCII characters) can now be sent over a traditional telegraph wire, just like any other telegram.
+- the receiver does the above steps on reverse.
+
+This is a very common pattern you find everywhere in computing: different layers of encoding on top of each other.
+
+## A Closer look at the Keyboard
+On a terminal most keypresses result in a 7-bit binary number (the character's ASCII code) to be sent over the serial output line. However, there are some keys that are meant to be pressed only in combination with another key. They change that other key's effect by making accessible a 2nd or even 3rd key assignment. Those keys are called _meta-keys_. On the original terminals there were two meta-keys: Shift and Control.
+
+On modern computers there are some additional meta-keye:, Option (Apple) or Alt (other brands, alt stands for Alternative), Command (Apple), Alt-Gr (other brands, "Gr" stands for graphics) and on some Laptops: Fn (short for "Function"). On modern computers the effect of a meta-key combinations is defined by the operating system and/or the application that owns the active window. 
+
+## Control Codes defined by ASCII
+When the Control-key is pressed in combination with a letter (for example Control-A) on a terminal (or with the window of the terminal emulator being the active window) then a well-defined 7-bit value is sent. For Control-A, thats a 1, for Control-B it's a 2 and so forth all the way to 31. All of these _control codes_ or _control characters_ have a special meaning that is defined by the ASCII standard: 13 (Control-M) for example is Carriage Return (CR), that's the same as pressing the Enter key. Control-J (10) is Line Feed (LF), Bell (7) is Control-G and makes the receiving end beep! The `escape` character is Control-[.
+ 
+> **How keystrokes are printed in documentation written in ASCII**
+>`Ctrl-J` , `C-J` or `^J` means "hold down Control and then press J, then release Control".
+
+## ANSI Escape sequences
+We talked about that Video Terminals, most famously the terminals built by Digital Equipment Corporation (DEC), introduced a new set of features that were impossible in the world of TTYs (the typewriter-like terminals). Things like clearing the screen or moving the cursor upwards or anywhere on the screen, setting the text color or enabling underlining or bold characters. The dilemma: there's no space left in the ASCII table for additional control characters. We talked about how this was solved in a similar way to how Baudot solved the problem of not having enough code-points for both, letters _and_ numbers. The solution is, to switch the receiver into a different _mode_ by sending a mode-switching character or _escape_ character. The idea is to escape from normal interpretation, sort of like saying: what you receive now is not to be interpreted in the normal way. As usual different vendors invented different proprietary extensions until the chaos became a problem for operability and ANSI (American National Standards Institute) solved the problem by releasing an official standard.   [read more on Wikipedia](https://en.wikipedia.org/wiki/ANSI_escape_code#Sequence_elements)
+
+## Terminal Emulators
+We talked about the difference between emulation and simulation: An emulator behaves _exactly_ like the thing it mimics, while a simulator tries to do act similar. (A flight simulator does not actually fly).
+
+Originally, video terminals were connected via serial lines to a mainframe (big, noise computer) in the cellar. Today both devices are merged into one (laptop). This fact is a source of confusion. Think about it this way: Like a compact stereo, or a cameraphone, your laptop is really two devices in one: a terminal and a computer. They sort of share the keyboard. When the terminal window is in focus, the keyboard belongs to the terminal, when some other application is in focus, the keyboard act differently. A terminal emulator is like a very fancy video terminal. It supports also the ASCII control codes and the ANSI control sequences and you can select font, text size, background color and text color.
+
+Originally the other end of the terminal, the thing you "chat" with, was a program that was already running on the computer in the cellar. Today that program (the _shell_) is started for you the moment you start the terminal emulator. This is another source of confusion.
+
+> **Important Distinction**
+> The terminal emulator and the shell are two different things. The terminal emulator is a piece of virtual hardware, a dumb thing, not programmable. It simply sends all keystrokes over a virtual wire, and when it receives characters over another virtual wire, it displays those characters and moves the cursor. That's all. The shell, on the other hand, is your _dialog partner_, the thing you converse with, a program whose sole purpose is to interpret what you write and act on it. Think of it this way: The terminal is a phone, the shell is the person on the other end.
+
+## Kernel, Shell, Userland
+
+We talked about the three components of a UNIX system. The _kernel_ is the overlord of the system, it makes sure that users that use the computer at the same time (_concurrently_) are protected from each other and also that programs that run concurrently cannot overwrite each other's data. Furthermore it makes sure that the time-sharing slices are shared in a fair manner. (whatever "fair" means).
+
+The shell is your interface to the machine. It let's you start programs and combine them, building complex data flows through multiple programs and more. You cannot interact with the kernel directly. Put programs can. The kernel might however disallow certain programs from doing certain things, depending on their privilege level. (more on this later)
+
+The _userland_ is where those programs live. It's also where the shell lives, because the shell simply is a program like all the others, it's just the one that happens to be in charge of the terminal input/output connections. Consequently the sum of all those little programs (like `ls`, `pwd`, `cd`) is called the userland.
+
+## UNIX family tree
+We talked about the evolution of UNIX, starting at Bell Labs and MIT with Multics. The department of defence wanted an operating system with time-sharing (`mult` stand for multi, as in multi-user, multi-program). The project got cancelled after it became too complex. Dennis Ritchie and Ken Thompson, both working at Bell Labs were so much in love with the basic ideas (the UNIX philosophy) that they continued anyway under the name Unics (uni as in the opposite of multi). Sone the University of Berkeley got involved and improved on it, they made their own distribution (first one being illegal, infringing on AT&T's intellectual property ). They called it BSD (Berkeley Software Distribution). For the next release, they re-coded all the stuff that wes property of AT&T (the employer of Ritchie and Thompson), namely the userland tools (the project's name is GNU - Gnu Is Not Unix) and the University's lawyers wrote up the BSD license (it basically says: do what you want, we take no responsibilities. It allows commercial use, modification, redistribution and everything else you can think of). Since then, UNIX is free. FreeBSD, OpenBSD, NetBSD, PCBSD are all descendants of this distro (short for distribution). Darwin is another one, combined with their own kernel, this is the foundation of Mac OS X and iOS. Linus Torvalts wrote a kernel for IBM PCs. Together with the userland from the GNU project it is the foundation for Fedora, Suse, Debian, Ubuntu and Android.
+
+So, all the operating systems are closely related, they all are Unix, or _unix-like_. The one exception being: everything from Microsoft. Windows is a descendant of DR-DOS by Digital Research which in turn is related to CP/M.
+
+## foo, bar, baz
+We talked about where the word `foo` comes from (a comic from the 30s) and what it means (nothing, it's nonsense). We also talked about the US military term FUBAR (fucked up beyond all repair). These two things seem to have interacted in people's head and lead to `foo` and `bar` being used very frequently as placeholders for words. Sort of like `lorem ipsum` but for single words rather than a whole body of text.
+
+## file paths
+We talked about relative and absolute paths. You recognise an absolute path by a leading slash (`/`) or tilde (`~`), where tilde is short for "my home directory" and slash stands for the _root_ of the file system (the uppermost directory level). The root has no name, it just has a symbol (`/`).
+
+We talked about `.` and `..` as placeholders for the current directory and the _parent_ directory (one above the current one)
+
+## The grammar of bash
+We talked about the basic grammar of a bash command:
+
+`foo bar baz`
+
+this would run the program called `foo` and pass `bar` and `baz` as arguments to the program. The program can do with these arguments whatever it wants. It's the program that defines the _semantics_ of its arguments, to the shell they are just strings of characters with no particular meaning.
+
+A few examples
+
+`cd /foo/bar` runs `cd` with a single argument `bar`.
+`ls foo bar baz` runs `ls` with three arguments
+`pwd` runs `pwd` with no arguments.
+
+Even though the shell (bash) has no clue what the arguments are, it sort of guesses that they are paths and therefor helps you creating those paths. (Most of the time it is correct, many arguments are actually paths). It helps you by completing path segments when you press the tab key or by displaying a list of all possibilities when you double-tap the tab key.
+
+## de-facto argument grammar
+Event though each program can decide how it wants to interpret the characters passed in as arguments, there's a convention:
+
+- argument staring with two dashes (`--`) are the long form of a switch
+	- `ls --all --list`
+- arguments starting with a single dash (`-`) are the short form of a switch
+	- `ls -l -a`
+- short forms can be combined (shortcut of the shortcut)
+	- `ls -la`
+
+A switch (also called _flag_) is a one-bit-value. It is either turned on or off. Some are turned on by default and you can turn them off if you want, some are turned off by default and you can turn them on.
+
+For `ls` both flags `list` and `all` are turned off by default. In the examples above, they are turned on.
+
+
+---
+
+# Session #1 2015-9-17
 
 ### Basics
 
