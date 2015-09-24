@@ -12,9 +12,6 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 
 # Session #2 2015-9-24
 
-# Session 2
-
-
 ## The relation between binary, octal and hexadecimal
 We talked about how it is much easier to convert between binary and octal, or binary and hexadecimal than it is to convert between decimal and ... well, really everything else. It is our so familiar decimal system that is the outsider here. The reason for this: 3bits fit exactly into one octal digit and four bits fit exactly into one hexadecimal digit. 
 >There are 8 ways to arrange 3 bits and octal has a symbol for each one of them. There are 16 ways to arrange 4 bits and hexadecimal has a symbol for each one.
@@ -22,6 +19,7 @@ We talked about how it is much easier to convert between binary and octal, or bi
 ## base60 and base64
 We also talked about base 60 (used in clocks, like 1:43:32, meaning one hour, 43 minutes, 32 seconds. This is a base60 system where each symbol consists of two decimal digits. This is totally sick if you think about it. Certainly more complex than anything you find in the tidy world of programming!
 There's a much less familiar one: base64, the biggest number system we can do using only visible characters from the ASCII table. It is the most compact way to transfer a very large sets of bits over a traditional 7bit telegraphy line.
+
 We talked about how this could be used for a telegraphy-age telefax, a thing that actually did exist! We talked about the _stack of encodings_ that is necessary to make this work:
 - Pixels are encoded as ones and zeros
 - six of them are grouped an their binary value is used to map them to a character in the set of characters used by base64 (2^6 = 64)
@@ -84,9 +82,9 @@ this would run the program called `foo` and pass `bar` and `baz` as arguments to
 
 A few examples
 
-`cd /foo/bar` runs `cd` with a single argument `bar`.
-`ls foo bar baz` runs `ls` with three arguments
-`pwd` runs `pwd` with no arguments.
+- `cd /foo/bar` runs `cd` with a single argument `bar`.
+- `ls foo bar baz` runs `ls` with three arguments
+- `pwd` runs `pwd` with no arguments.
 
 Even though the shell (bash) has no clue what the arguments are, it sort of guesses that they are paths and therefor helps you creating those paths. (Most of the time it is correct, many arguments are actually paths). It helps you by completing path segments when you press the tab key or by displaying a list of all possibilities when you double-tap the tab key.
 
