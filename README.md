@@ -8,7 +8,7 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 
 - [Session 1](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-1-2015-9-17)
 - [Session 2](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-2-2015-9-24)
-- [Session 2](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-3-2015-10-01)
+- [Session 3](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-3-2015-10-01)
 
 # Session #3 2015-10-01
 
