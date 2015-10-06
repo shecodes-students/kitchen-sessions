@@ -68,7 +68,9 @@ We talked about taht symmetric ciphers only work after the secret key has been t
 
 We discussed that it would be much more practical if tehre was a way to securely exchange a secret over an unsecure channel.
 
-### Homework: watch [this video](https://www.youtube.com/watch?v=3QnD2c4Xovk) on Diffie-Hellman Key Exchange.
+### Homework
+  - watch [this video](https://www.youtube.com/watch?v=3QnD2c4Xovk) on Diffie-Hellman Key Exchange.
+  - With [this video](https://www.youtube.com/watch?v=GSIDS_lvRv4) on asymmetric cryptography
 
 # Session #2 2015-9-24
 
