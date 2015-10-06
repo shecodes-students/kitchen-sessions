@@ -6,9 +6,69 @@ she.codes kitchen sessions Berlin
 
 Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 
-[Session 1](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-1-2015-9-17)
-[Session 2](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-2-2015-9-24)
+- [Session 1](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-1-2015-9-17)
+- [Session 2](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-2-2015-9-24)
+- [Session 2](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-3-2015-10-01)
 
+# Session #3 2015-10-01
+
+## Revisiting positional notation
+
+I gave you the task of converting a largish decimal number (1052) to binary (base2), octal (base8), hexadecimal (base16) and base64. We found out: the higher the base, the shorter the resulting notation. Therefore, to transfer a string of bits over a transmission line that can only transport 7-bit ASCII (telegraphy) the most space-efficient encoding is base64. It uses (nearly) all of the printibale characters in the ASCII code table.
+
+We also found out about a neat relationship between binary and octal, binary and hex and binary and base64
+
+- there are 8 ways to combine three bits -> three bits can be represented by one octal digit
+- there are 16 ways to combine four bits -> four bits can be represented by one hex digit
+- there are 64 ways to combine six bits -> six bits can be represented by one base64 digit
+
+So, in addition to base64 (space-efficient), hex is pretty nice too, because eight bits (=one byte, which is a commonly used grouping of bits) can be represented by two hex digits.
+
+We found another relationship:
+
+- there are 64 ways to combine two octal digits -> two octal digits can be represented by one base64 digit
+
+We used these obervations to quickly convert a long binary number to hex, octal or base64 by grouping the bits into groups of 3, 4 or 6 repspectively. You can then convert the groups separately, which is much simpler than dealing with the whole thing at once.
+
+### Homework:
+
+- convert these binary numbers into octal, hex and base64
+    - 101100101101
+    - 100111011100
+    - 1001001
+    - 111110001
+
+- convert octal 77043 to base64 and binary
+- convert hex ACFF01 to binary
+
+As you will see: numbers like 2, 4, 8, 16, 32, 64, 128 will occur all over the place. A fun way to get familiar with these numbers is to play [2048](https://gabrielecirulli.github.io/2048/) (_BEWARE_ it's addictive!)
+
+## A Message From The Others
+
+I presented you an encoded message from another she.codes team and we discussed possible encodings. First we talked about the base they might have used for number notation (tunred out to be hex) then we talked about the meaning of those numbers. It turned out that the message is an 8-bit-wide bitmap (or raster image) where each 1 represents a dark pixel and each zero represents a transparent pixel. After successful decoding, you prepared a message for another team (maybe using a different encoding ... we won't discolse it here)
+
+### Homework
+- think about how you could make an image file that uses more colors than just two.
+
+## More userland commands
+
+We talked about the userland tools `mkdir` (make directory), `chmod` (change file mode), `chown` (change owner) and the text file editor `vim`.
+
+### Homework:
+- make sure you've watched [Command Line Basics Videos](https://www.youtube.com/playlist?list=PLVqGqrTs4ZWOhcApSWYIX_rnPMZDAClJa) #1, #2, #3, #9 and #10
+- play [vim adventures](http://vim-adventures.com/)
+
+## Public Key Cryptography
+
+We briefly talked about symmetric and asymmetric cryptography. In symmetric crypto, one key is used to encrypt and also to decrypt a message. Both parties (sender and receiver) need to agree on the same key and they need to keep it a secret. The [_Ceasar Cipher_](https://en.wikipedia.org/wiki/Caesar_cipher) is an example for symmetric crypto (and also an example for a very weak cipher that can easily be broken).
+
+> In cryptography, a **cipher** (or cypher) is an algorithm for performing encryption or decryption -— a series of well-defined steps that can be followed as a procedure.
+
+We talked about taht symmetric ciphers only work after the secret key has been transferred between sender and receiver, whcih in turn requires a secure communication channel. Historically, this is solved by the two parties meeting in person to exhcnage the key.
+
+We discussed that it would be much more practical if tehre was a way to securely exchange a secret over an unsecure channel.
+
+### Homework: watch [this video](https://www.youtube.com/watch?v=3QnD2c4Xovk) on Diffie-Hellman Key Exchange.
 
 # Session #2 2015-9-24
 
