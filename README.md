@@ -9,6 +9,169 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 - [Session 1](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-1-2015-9-17)
 - [Session 2](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-2-2015-9-24)
 - [Session 3](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-3-2015-10-01)
+- [Session 4](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-4-2015-10-08)
+
+
+# Session #4 2015-10-08
+
+## Octal to Base64
+
+We discussed your homework. None of you used the shortcut when converting from octal to Base64. We discussed, that depending on the values, it might be easier, or not to convert a pair of octal digits to one base64 digits (rather than going through binary as an intermediate step)
+
+*Example*
+- octal `00010203` can trivially be converted to base64: `ABCD`
+- octal `57744372` requires to calculate 5*8+7, 7*8+4, 4*8+4 etc. Alternatively, you can trivially convert it to binary `101111 111100 100011 111010` and then you can go from this groups of six bits to the base64 symbol. (that's not really easier though, depends on taste)
+
+We also realized that the base64 table is actually pretty easy to remember:
+- 26 upper case letters
+- 26 lower case letters
+- 0 to 9
+- the symbols `+` and `/`
+
+## Revisting assymetric cryptography
+
+We revisted Diffie-Hellman key exchange and the properties of public key cryptography. It allows you to
+- encrypt a message that only the intended recipient can decrypt (use the recipient's public key)
+- digitally sign a message you have written and make sure it is not modfied by a man-in-the-middle. (encode with your own private key)
+- combine encryption with a digital signature
+
+We discussed that encrypten and authentication is especiialy important when remotely logging into a computer via the Internet.
+
+## SSH
+
+We talked about sssh and sshd (the ssh _daemon_) and how they use public key crypto to make sure the two partners of communication really are who they think they are, and also to create a shared secret (think of the color mixing video). The shared secret (a random number) is then used as the _key_ to symmetrically encrypt the data that flows between the two computers. AES (advanced encryption standard) is used for the symmetric encryption.
+
+> A `daemon` is a program that keeps running (is undead). Normal programs (like `cat`, `ls`) simply quit after they've done their job. `sshd`'s job however is to listen for incoming "calls" (think of a zombie sitting next to a telephone), it needs to run forever. Other words for _daemon_ are: server or service. You've probably read the word `daemon` in an email that could not be delivered and therefore bounced back to you. It was the `mail daemon` that sent it back to you.
+
+We checked if you already have a key pair (private and public key) looking for a `.ssh` directory in your home directoy. The key pair is saved there as two files, `id_rsa` (private) and `id_rsa.pub` (public).
+
+We then created a key pair by running `ssh-keygen`
+
+## Key Exchange
+
+We briefly mentioned the existance of key-servers and the problem of identity theaft. (I could upload a public key and claim that it is yours, then I would be able to decrypt secret messages people send using that public key) [keybase.io](https://keybase.io) is a web-based service that uses github, twitter, facebook etc. to build trust that a user really is the person she claims to be.
+
+We used `cat` and `pbcopy` (OS X) or `xsel` to copy the public key into the clipboard:
+
+__OS X__
+``` sh
+$ cat ~/.ssh/id_rsa.pub | pbcopy
+```
+
+__GNU/Linux__
+``` sh
+$ cat ~/.ssh/id_rsa.pub | xsel --clipboard
+```
+
+> If you struggle with finding special characters on your German Mac keyboard, [this charts  helps](https://blogs.oracle.com/blogfinger/entry/mac_os_x_often_used).
+
+You then simply pasted your key into an email and sent them to me. After I put your keys into the `authorized_key` file in `.ssh` directory of the home directory of a user called `pair` on my computer, you were able to log in remotely.
+
+``` sh
+$ ssh pair@terrorbird.local
+```
+
+You both used the same user account (`pair`) on my computer and were able to run commands on my machine without me even noticing.
+
+> Even though both of you shared one user account on the same machine, you could work independantly from each other. Using `cd` for example did not affect the other user's working directory. That's because you both had your own shell. For each user that logs in, a new shell is started. You can even specify which shell (there's `bash`, `csh`, `zsh` etc.) you want. (We talk about that later)
+
+## Sharing a terminal session with tmux
+
+For pair-programming however, we all want to work in the same shell and share one terminal session as if we would all be sitting in front of the same computer (but more convenient).
+
+We discussed the program `tmux`. Originally intended as a _terminal multiplexer_ ("multiplex" means "many in one", think of a multiplex cinema), we use `tmux` mainly because it also allows to share a terminal among users on the same computer (users that ssh'ed into the same computer)
+
+When you host a pair programming session on your computer, you start a tmux session by running
+
+``` sh
+$ tmux -S /tmp/pair new
+$ chmod 777 /tmp/pair
+```
+
+As a guest, you join (attach) to a tmux session like this:
+
+``` sh
+$ tmux -S /tmp/pair attach
+```
+(you typically find this command line in the command history of the `pair` user, so after `ssh`ing into the host computer, you simply press the `up arrow` key, and there it is!
+
+In a shared tmux session, all participants can type on their keyboard and the keystrokes are handled as if the host typed them. We all become one user (typically we use the user account of the person that hosts) and everyone sees the same terminal output, however in their own favorite font and colors, because your terminal emulator still rules over these aspects. To make this work, the shared area is as big as the smallest terminal in the session. All other terminals are artificcially made smaller by filling some area with dots.
+
+We discussed that this form of pair programming might be superior to screen sharing (transfering a compressed image of the computer desktop over the network) in low-bandwidth situations or when the host computer has no graphical user interface (GUI), like a server for example. It also is more inclusive, even people that use a [Braille display](https://en.wikipedia.org/wiki/Refreshable_braille_display) can participate. If you are developing an application with a GUI however, it becomes harder to have a shared view of your work's result.
+
+With briefly experimented with opening `panels` (terminals in terminals) inside tmux and navigating between panels. Expect more `tmux` wizardry later.
+
+## History of UNIX
+
+I gave you a more detailed history of UNIX and we talked about some influencial persons and organisations and how development of UNIX and the Internet (not to be confused with the web) were closely connected.
+
+Here's the timeline:
+
+- 1957-10-04 Launch of Sputnik 1 (first satellite) causes _Sputnik crisis_ in the US
+- 1958-02 Eisenhower authorises creation of _DARPA_ as a response to the launch of Sputnik 1, 13 employees manage an initial budget of $520 Mio (2.92 billion as of 2015)
+- 1958-06 _NASA_ act signed
+- 1964 _Gneral Electric (GE)_, _Bell Labs_ and _MIT_ collaborate on _Multics_, a time-sharing operating system (OS) for a GE mainframe, MIT's MAC project is sponsored by DARPA since '63 with $2 Mio
+- 1968 After visiting MIT and realising that keeping a phone line open is one of the major cost factrors, Donald Davies develops the concept of _packet switching_ and presents it in Edinburgh
+1969 Davies publication and the fact that Bob Tylor needed to use three different terminals in his Pentagon office to remote-control three ARPA-sponsored computers across the nation, inspire ARPANET
+- 1969 Unhappy with Multics, MIT AI staff (including Richard M. Stallman) start work on their own OS: _ITS_ ("the incompatible time sharing system", a name that expresses frustration), a completely open (as in: no security), wiki-like, post-privacy OS.
+- 1969 Bell Labs leaves multics consortium because they consider it to be too comprex, complicated and unelegant
+    - **Ken Thompson** (26) and **Dennis Ritchie** (28) start work on _Unics_ (pun: eunuchs) on a PDP-7 as a platform for their game "Space Travel".
+    - Thompson creates the system programming language _B_ to support multiple target architectures
+    - Thompson and Ritchie create _ed_, a modal editor with almost no feedback (as approriate for ASSR 33 TTYs)
+- 1971 First release of _UNIX_ ("ics" now replaced with "ix"), entirely written in assembly for PDP-11
+    - Because of antitrust laws, AT&T had to license the Unix source code to anyone who asked for it (for a little handling fee)
+- 197x Ritchie focuses on **C**, the successor of B, Thompson focuses on Unix
+- 1973 Unix is re-written in C
+- 1973 Lynn Conway joins _XEROX PARC_ (The Palo Alto Research Center of Xerox, the copier company), at PARC the concept of a computer mouse and a graphical user interface (GUI) with windows and buttons was invented and presented to vistors like **Bill Gates** and **Steve Jobs** who both were very inspired by what they saw.
+- 1975 First license of "Research UNIX"
+- 1974 UC Berkeley acquires a UNIX source license, runs it on a PDP 11
+- 1975 Thompson at Berkeley as visiting professor
+- 1976 US Copyright Act, software is now protected by copyright laws
+- 1976 Students at Berkeley start improving AT&T Unix and call it **BSD** (Berkeley Software Distribution), **Bill Joy** leads these efforts.
+- 1977 Release of Version 7 UNIX (bourne shell replaces thompson shell)
+- 1978 1BSD (an add-on to Unix 6) was sent to ~30 recipient.
+- 1978 Conway teaches VLSI (very large scale integration, i.e. computer-aided chip design) at MIT
+- 1979 MIT AI Lab dissolves, (founding of Symbolics and LMI), leaving Stallman without the community of **Hackers** (they invented the term; it means: programmers (that hack on keyboards), later the media incorrectly used the word to mean "people that commit cypercrime")
+- 1979-05 2BSD contains csh and **vi** (both written by Joy) and Berknet, developed by Eric Schmidt as part of his master's thesis work. 2BSD was maintained until 2008
+- 1979-09 3BSD contains the Unix port to VAX and a re-written kernel with virtual memory managment called _vmunix_
+- 198x Lynn Cornway joins DARPA (from XEROX PARC)
+    - DARPA's VLSI Project (founded by Lynn Cornway) funds further development of BSD and Stanford University Network (S.U.N. Workstation) to make it easier to design complex CPUs > 1k transistors. The basic idea is: separate design of logic circuits from the nitty-gritty details of physics, ley computers calculate the circuit layout, this requires software and hardware)
+- 1980 Joy re-implements **TCP/IP** instead of integrating DARPA-sponsored BBN version
+- 1981 _MOSIS_ service launched as one of the first services on the ARPANET (aka the Internet). Allows students to upload their chip-designs via FTP and they receive the finished chip by mail. This is the implementation of a VLSI system.
+- 1981 Berkeley students publish their _RISC1_ design (DARPA VLSI funded, they uses MOSIS)
+- 1982 Joy and Stanford students found _SUN Microsystems_
+- 1984 After splitting up AT&T's local telephone businesses and therefor freed from antitrrust regulations, they start to sell Unix as a commercial product ($16k for administrative use by universities and $800 for education with an addition per-CPU fee)
+- 1983-09 **Richard Stallman** launches the **GNU project** and starts working on gnu emacs, **gcc**
+- 1985-10 Stallman founds the **Free Software Foundation** (FSF)
+    - FSF funds development of **bash** and many ohter userland tools
+- 1989 Release of BSD "Net/1" (TCP/Stack only under a free license for non-AT&T licencees)
+- 1988 First release of NextStep, an OS based on BSD
+- 1990 Using NextStep, **Tim Berners-Lee** writes the first web browser. It's name: _WorldWideWeb_
+- 1991 Release of BSD "Net/2", whole OS with AT&T code (almost) replaced
+- 1991 **Linus Torvalds** releases first version of **Linux**, a kernel to be combined with a GNU userland
+- 1992 Lawsuit AT&T vs BSDi, uncertainty of legal status of BSD, boosts GNU/Linux popularty
+- 1992 Thompson co-invents **UTF-8** (backward-compatibleish replacement for ASCII)
+- 1993 **FreeBSD** project release of a PC port of BSD
+- 1994 FreeBSD 2.0 is free of any AT&T code
+- 2000 **Apple** releases **Darwin**, the core of **OS X** [_oh es ten_] and *iOS*, based on BSD and NextStep
+- 200x Thompson works on the Go language at **Google** and now uses Linux
+- 2005-06 Google acquires Android Inc. for at least $50 million
+- 2011-10-12 Dennis Ritchie found dead one week after Steve Jobs, but without much media coverage. 
+    - Fedora 16 (Linux) and FreeBSD 9 both are dedicated to his memory.
+
+### Side notes:
+
+- At SUN Bill Joy also worked on SPARC, NFS and **Java**
+- Stallman co-authored EMACS and wrote texinfo, a replacment for Scribe, the first markup system
+- Bob Taylor worked at NASA until 65. Joined XEROS PARC in 1970. Worked at **Digital Equipment Corporation** (DEC) until he retired. Taylor about the Internet: "Will it be freely available to everyone? If not, it will be a big disappointment"
+
+- Playstation operating system is based on FreeBSD 
+- Android is based on Linux
+- GNU/Linux dominates on servers and supercomputers
+
+## Message to the others
+
+In this fun and popular section of each kitchen session, we talked about simple image compression using [RLE](https://en.wikipedia.org/wiki/Run-length_encoding) (run-length encoding). But: _shh!_, the others don't know yet!
 
 # Session #3 2015-10-01
 
