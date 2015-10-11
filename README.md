@@ -16,11 +16,11 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 
 ## Octal to Base64
 
-We discussed your homework. None of you used the shortcut when converting from octal to Base64. We discussed, that depending on the values, it might be easier, or not to convert a pair of octal digits to one base64 digits (rather than going through binary as an intermediate step)
+We discussed your homework. None of you used the shortcut when converting from octal to Base64. We discussed that, depending on the values, it might be easier or not to convert a pair of octal digits to one base64 digit instead of going through binary as an intermediate step.
 
 *Example*
 - octal `00010203` can trivially be converted to base64: `ABCD`
-- octal `57744372` requires to calculate 5*8+7, 7*8+4, 4*8+4 etc. Alternatively, you can trivially convert it to binary `101111 111100 100011 111010` and then you can go from this groups of six bits to the base64 symbol. (that's not really easier though, depends on taste)
+- octal `57744372` requires to calculate 5*8+7, 7*8+4, 4*8+4 etc. Alternatively, you can trivially convert it to binary `101111 111100 100011 111010` and then you can go from thes groups of six bits to the base64 symbol. (that's not really easier though, depends on taste)
 
 We also realized that the base64 table is actually pretty easy to remember:
 - 26 upper case letters
@@ -35,21 +35,30 @@ We revisted Diffie-Hellman key exchange and the properties of public key cryptog
 - digitally sign a message you have written and make sure it is not modfied by a man-in-the-middle. (encode with your own private key)
 - combine encryption with a digital signature
 
-We discussed that encrypten and authentication is especiialy important when remotely logging into a computer via the Internet.
+We discussed that encryption and authentication is especiialy important when remotely logging into a computer via the Internet.
 
 ## SSH
 
-We talked about sssh and sshd (the ssh _daemon_) and how they use public key crypto to make sure the two partners of communication really are who they think they are, and also to create a shared secret (think of the color mixing video). The shared secret (a random number) is then used as the _key_ to symmetrically encrypt the data that flows between the two computers. AES (advanced encryption standard) is used for the symmetric encryption.
+We talked about `ssh` and `sshd` (the ssh _daemon_) and how they use public key crypto to make sure the two partners of communication really are who they think they are, and also to create a shared secret (think of the color mixing video from last week). The shared secret (a random number) is then used as the _key_ to symmetrically encrypt the data that flows between the two computers. AES (advanced encryption standard) is used as the symmetric cipher.
 
 > A `daemon` is a program that keeps running (is undead). Normal programs (like `cat`, `ls`) simply quit after they've done their job. `sshd`'s job however is to listen for incoming "calls" (think of a zombie sitting next to a telephone), it needs to run forever. Other words for _daemon_ are: server or service. You've probably read the word `daemon` in an email that could not be delivered and therefore bounced back to you. It was the `mail daemon` that sent it back to you.
 
-We checked if you already have a key pair (private and public key) looking for a `.ssh` directory in your home directoy. The key pair is saved there as two files, `id_rsa` (private) and `id_rsa.pub` (public).
+We checked if you already have a key pair (private and public key) by looking for a `.ssh` directory in your home directoy. The key pair is saved there as two files, `id_rsa` (private key) and `id_rsa.pub` (public key).
 
-We then created a key pair by running `ssh-keygen`
+We then created a key pair by running `ssh-keygen` and looked at your public key with the command
+
+``` sh
+$ cat ~/.ssh/id_rsa.pub
+```
+
+The public key is a very long string of bits (typically 2048 or 4096 bits). To save it in a text file in a space-efficient way, it is base64 encoded.
+
+**Homework**
+Watch [this video](https://www.youtube.com/watch?v=rm6pewTcSro&list=PLVqGqrTs4ZWOhcApSWYIX_rnPMZDAClJa&index=6) on ssh and scp.
 
 ## Key Exchange
 
-We briefly mentioned the existance of key-servers and the problem of identity theaft. (I could upload a public key and claim that it is yours, then I would be able to decrypt secret messages people send using that public key) [keybase.io](https://keybase.io) is a web-based service that uses github, twitter, facebook etc. to build trust that a user really is the person she claims to be.
+We briefly mentioned the existance of key-servers and the problem of identity theaft. (I could upload a public key and claim that it is yours, then I would be able to decrypt secret messages people sent using that public key) [keybase.io](https://keybase.io) is a web-based service that uses github, twitter, facebook etc. to build trust that a user really is the person she claims to be.
 
 We used `cat` and `pbcopy` (OS X) or `xsel` to copy the public key into the clipboard:
 
@@ -73,7 +82,7 @@ $ ssh pair@terrorbird.local
 
 You both used the same user account (`pair`) on my computer and were able to run commands on my machine without me even noticing.
 
-> Even though both of you shared one user account on the same machine, you could work independantly from each other. Using `cd` for example did not affect the other user's working directory. That's because you both had your own shell. For each user that logs in, a new shell is started. You can even specify which shell (there's `bash`, `csh`, `zsh` etc.) you want. (We talk about that later)
+> Even though both of you shared one user account on the same machine, you could work independantly from each other. Using `cd` for example did not affect the other user's working directory. That's because you both had your own shell. For each user that logs in, a new shell is started.
 
 ## Sharing a terminal session with tmux
 
@@ -97,15 +106,15 @@ $ tmux -S /tmp/pair attach
 
 In a shared tmux session, all participants can type on their keyboard and the keystrokes are handled as if the host typed them. We all become one user (typically we use the user account of the person that hosts) and everyone sees the same terminal output, however in their own favorite font and colors, because your terminal emulator still rules over these aspects. To make this work, the shared area is as big as the smallest terminal in the session. All other terminals are artificcially made smaller by filling some area with dots.
 
-We discussed that this form of pair programming might be superior to screen sharing (transfering a compressed image of the computer desktop over the network) in low-bandwidth situations or when the host computer has no graphical user interface (GUI), like a server for example. It also is more inclusive, even people that use a [Braille display](https://en.wikipedia.org/wiki/Refreshable_braille_display) can participate. If you are developing an application with a GUI however, it becomes harder to have a shared view of your work's result.
+We discussed that this form of pair programming is superior to screen sharing (transfering a compressed image of the computer desktop over the network) in low-bandwidth situations or when the host computer has no graphical user interface (GUI), like a server for example. It also is more inclusive; even people that use a [Braille display](https://en.wikipedia.org/wiki/Refreshable_braille_display) can participate. If you are developing an application with a GUI however, it becomes harder to have a shared view of your work's result.
 
-With briefly experimented with opening `panels` (terminals in terminals) inside tmux and navigating between panels. Expect more `tmux` wizardry later.
+We briefly experimented with opening `panels` (terminals in terminals) inside tmux and navigating between panels. Expect more `tmux` wizardry later.
 
 ## History of UNIX
 
 I gave you a more detailed history of UNIX and we talked about some influencial persons and organisations and how development of UNIX and the Internet (not to be confused with the web) were closely connected.
 
-Here's the timeline:
+Here's the timeline we went through:
 
 - 1957-10-04 Launch of Sputnik 1 (first satellite) causes _Sputnik crisis_ in the US
 - 1958-02 Eisenhower authorises creation of _DARPA_ as a response to the launch of Sputnik 1, 13 employees manage an initial budget of $520 Mio (2.92 billion as of 2015)
