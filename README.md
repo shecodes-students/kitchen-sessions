@@ -20,7 +20,7 @@ We discussed your homework. None of you used the shortcut when converting from o
 
 *Example*
 - octal `00010203` can trivially be converted to base64: `ABCD`
-- octal `57744372` requires to calculate 5*8+7, 7*8+4, 4*8+4 etc. Alternatively, you can trivially convert it to binary `101111 111100 100011 111010` and then you can go from thes groups of six bits to the base64 symbol. (that's not really easier though, depends on taste)
+- octal `57744372` requires to calculate 5*8+7, 7*8+4, 4*8+4 etc. Alternatively, you can trivially convert it to binary `101111 111100 100011 111010` and then go from these groups of six bits to the base64 symbol. (that's not really easier though, depends on taste)
 
 We also realized that the base64 table is actually pretty easy to remember:
 - 26 upper case letters
