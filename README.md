@@ -10,7 +10,7 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 - [Session 2](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-2-2015-9-24)
 - [Session 3](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-3-2015-10-01)
 - [Session 4](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-4-2015-10-08)
-- [Session 4](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-5-2015-10-15)
+- [Session 5](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-5-2015-10-15)
 
 # Session #5 2015-10-15
 
@@ -52,7 +52,7 @@ I also showed you how to append the output of a command to a file.
 $ curl https://github.com/USERNAME.keys >> a_file
 ```
 
-> With two closing angle brackets (`>>`), the dile (here: `a_file`) will not be overwritten. Instead the command's output (here: the public key) will be _appended_ to the file.
+> With two closing angle brackets (`>>`), the file (here: `a_file`) will not be overwritten. Instead the command's output (here: the public key) will be _appended_ to the file.
 
 In the next session, I'll show you how you can use this technique to allow each other access to a specific account on one another's computers, so one of you can host the pair programming sessions in the future!
 
