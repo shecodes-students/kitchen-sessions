@@ -10,7 +10,64 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 - [Session 2](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-2-2015-9-24)
 - [Session 3](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-3-2015-10-01)
 - [Session 4](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-4-2015-10-08)
+- [Session 4](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-5-2015-10-15)
 
+# Session #5 2015-10-15
+
+## Markup languages
+
+We talked about language as a means to describe stuff. Bees describe the location of a food source to their fellow bees by dancing for example. We use natural language to talk to humans and formal languages if we want to describe something to a machine. We discussed that "describing something to a machine" really means to describe something in a completely unamiguous way. (people also say: _well defined_). This is probably how our code of law should have been written.
+
+We can use formal alnguages to describe shapes and colors and documents. We talked about the language `GML` developed at IBM in the 60s. It was the basis of SGML, which in turn was used by _Tim Berners-Lee_ at _CERN_ as a basis for `HTML`. We also discussed another derivative of SGML: XML. (extendably markup language), which can be used to describe all kinds of data (like a record in a database). XML is much stricter than HTML. We also talked about XHTML, which tries to merge HTML and XML.
+
+None of the above languages are programming languages because they do not describe a process or an algorithm. In the web, we use the languages HTML, CSS and JabaScript. Only the latter one is a programming language. We discussed that, among other things, the various programming languages vary in how hard they are to read and understand for humans and machines respectively. One extreme being `machine code`, a programming languages that is "very easy" to understand for a computer (it is its native language, so to speak) and very hard to read for a human. So-called "higher-level" programming languages are easier for humans to read and write abutrequire translator programs (called `interpreter` or `compiler`) to be understood by machines.
+
+## A first pair-programming session
+
+I gave you an assignment to create a very simple web page in a shared editing session using `ssh`, `tmux` and `vim`. After creating the file, you opend it with the `open` command, which opened a web-browser on my machine, because my machine was hosting the shared tmux session. We discussed that a web-server would be needed on the hosting machine, so that each one of you could open the html file in her own browser on her own machine.
+
+> On Linux the command `xdg-open` is used instead of `open` (on Macs) to open an arbitrary file. It starts the application that would have started if you would have double-clicked on the file's icon.
+
+## GitHub
+
+We made sure all of you have GitHub accounts and uploaded your public keys to your GitHub profile. (Remember: you can safely share your public key with everyone). I showed you a convenient way to get the public key of any GitHub user:
+
+``` sh
+$ curl https://github.com/USERNAME.keys
+```
+_replace USERNAME with the actual name of the user you are interessted in._
+
+> The `curl` command downloads a URL and outputs its content to the terminal.
+
+I showed you how to redirect the output of curl into a file.
+
+``` sh
+$ curl https://github.com/USERNAME.keys > a_file
+```
+> the file (called `a_file` here) will be deleted if it existed before. After this command ran, a_file contains what otherwise would have appeared in the terminal (the public key of USERNAME).
+
+I also showed you how to append the output of a command to a file.
+
+``` sh
+$ curl https://github.com/USERNAME.keys >> a_file
+```
+
+> With two closing angle brackets (`>>`), the dile (here: `a_file`) will not be overwritten. Instead the command's output (here: the public key) will be _appended_ to the file.
+
+In the next session, I'll show you how you can use this technique to allow each other access to a specific account on one another's computers, so one of you can host the pair programming sessions in the future!
+
+## The weekly image decoding excercise
+
+You decoded a manually encoded image by another she.codes pair. This time it was a 1bpp (1 bit per pixel) RLE compressed image (also called _bitmap_). We discussed how RLE (run length encoding) works and how, in this case, it did not actually reduce the image data, but quite contrary, made it bigger. We talked about that it would have been more efficient when the image was larger. RLE works by reducing stretches of repeated pixels (a `run`). If instead it would replace repeated _patterns_ of pixels with less bits (sort of like we use abbreviations in natural langage), it would have been nore efficient. This is exaclty what the so-called `LZ77` algorithm does. It is used by the PNG image format and by compression programms such as `zip` and  `gzip`.
+
+## Homework
+
+1. Make sure you watched all the homework videos up to now and in addition watch these two:
+
+  - [LZ77 Compression](https://www.youtube.com/watch?v=goOa3DGezUA)
+  - [Command line basics: file compression](https://www.youtube.com/watch?v=SxlHniGiu90&list=PLVqGqrTs4ZWOhcApSWYIX_rnPMZDAClJa&index=4)
+
+2. run `vimtutor` in your terminal.
 
 # Session #4 2015-10-08
 
