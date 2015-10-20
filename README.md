@@ -24,13 +24,15 @@ None of the above languages are programming languages because they do not descri
 
 ## A first pair-programming session
 
-I gave you an assignment to create a very simple web page in a shared editing session using `ssh`, `tmux` and `vim`. After creating the file, you opend it with the `open` command, which opened a web-browser on my machine, because my machine was hosting the shared tmux session. We discussed that a web-server would be needed on the hosting machine, so that each one of you could open the html file in her own browser on her own machine.
+I gave you an assignment to create a very simple web page in a shared editing session using `ssh`, `tmux` and `vim`. After creating the file, you opend it with the `open` command, which opened a web-browser on my machine, because my machine was hosting the shared tmux session. We discussed that a web-server would be needed on the hosting machine, so that each of you could open the html file in her own browser on her own machine.
 
-> On Linux the command `xdg-open` is used instead of `open` (on Macs) to open an arbitrary file. It starts the application that would have started if you would have double-clicked on the file's icon.
+> On Linux the command `xdg-open` is used instead of the Mac OS command `open` to open an arbitrary file. It starts the application that would have started if you had double-clicked the file's icon.
+
+We ran the `open` command without leaving vim by entering `:!open %`. `:` enters _command mode_ (also called _ex_ mode), `!` indicates that you want to run something in a shell, `open %` is the shell command to run. Before vim starts a new shell and runs your command however, it replaces `%` with the absolute path of the file that is currently open in vim. This is a quick way to test your work.
 
 ## GitHub
 
-We made sure all of you have GitHub accounts and uploaded your public keys to your GitHub profile. (Remember: you can safely share your public key with everyone). I showed you a convenient way to get the public key of any GitHub user:
+We made sure you have GitHub accounts and uploaded your public keys to your GitHub profiles. (Remember: you can safely share your public key with everyone). I showed you a convenient way to get the public key of any GitHub user:
 
 ``` sh
 $ curl https://github.com/USERNAME.keys
@@ -44,7 +46,7 @@ I showed you how to redirect the output of curl into a file.
 ``` sh
 $ curl https://github.com/USERNAME.keys > a_file
 ```
-> the file (called `a_file` here) will be deleted if it existed before. After this command ran, a_file contains what otherwise would have appeared in the terminal (the public key of USERNAME).
+> the file (called `a_file` here) will be deleted if it existed before. After this command ran, `a_file` contains what otherwise would have appeared in the terminal (the public key of USERNAME).
 
 I also showed you how to append the output of a command to a file.
 
@@ -58,7 +60,7 @@ In the next session, I'll show you how you can use this technique to allow each 
 
 ## The weekly image decoding excercise
 
-You decoded a manually encoded image by another she.codes pair. This time it was a 1bpp (1 bit per pixel) RLE compressed image (also called _bitmap_). We discussed how RLE (run length encoding) works and how, in this case, it did not actually reduce the image data, but quite contrary, made it bigger. We talked about that it would have been more efficient when the image was larger. RLE works by reducing stretches of repeated pixels (a `run`). If instead it would replace repeated _patterns_ of pixels with less bits (sort of like we use abbreviations in natural langage), it would have been nore efficient. This is exaclty what the so-called `LZ77` algorithm does. It is used by the PNG image format and by compression programms such as `zip` and  `gzip`.
+You decoded a manually encoded image by another she.codes pair. This time it was a 1bpp (1 bit per pixel) RLE compressed image (also called _bitmap_). We discussed how RLE (run length encoding) works and how, in this case, it did not actually reduce the image data, but quite contrary, made it bigger. We talked about that it would have been more efficient when the image was larger (more pixels). RLE works by reducing stretches of repeated pixels (a `run`). If instead it would replace repeated _patterns_ of pixels with less bits (sort of like we use abbreviations in written langage), it would have been nore efficient. This is exaclty what the so-called `LZ77` algorithm does. It is used by the PNG image format and by compression programms such as `zip` and  `gzip`.
 
 ## Homework
 
