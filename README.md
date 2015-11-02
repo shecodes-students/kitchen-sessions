@@ -65,8 +65,7 @@ Next time we will use hermes to host your team page on the web.
 1. Many people re-configure the so-called "Prefix-key" in `tmux` to be `Ctrl-A` instad of `Ctrl-B`. Find out how to do that!
 2. Many people also re-configure the useless (and annoying) `Caps-Lock` key to be another `Ctrl` key. Find out how to do that in your operating system.
 3. Start tmux, create some panes and switch between them, using `Caps-Lock A` as your prefix key!
-
-
+4. Remember LZ77? Think about how you can use it to encode an image for another kitchen-session team with better compression than RLE.
 
 # Session #6 2015-10-22
 
