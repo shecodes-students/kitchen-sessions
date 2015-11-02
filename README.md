@@ -136,11 +136,11 @@ to your `.vimrc` file. Now only `stdout` will be caputred by vim.
 
 You've already encountered the directory `etc` in the root of the file system when we talked about `/etc/passwd`
 
-> In the contect of the file-system `root` means the top-level directory)
+> In the context of the file-system `root` means the top-level directory)
 
-> `/etc` contains configuration files for various `daemons`.
+`/etc` contains configuration files for various `daemons`.
 
-First you need to locate the file called `sshd_conf`. It is a text file containing the settings of the ssh daemon. It is located eihter at `/etc/sshd_conf` or at `/etc/ssh/sshd_conf`, depending on your UNIX distribution.
+First you need to find locate the file  `sshd_conf`. It is a text file containing the settings of the ssh daemon. It is located eihter at `/etc/sshd_conf` or at `/etc/ssh/sshd_conf`, depending on your UNIX distribution.
 
 Make sure you have the following lines in this file and that they do not start with a hash (#) character.
 
@@ -154,9 +154,6 @@ UsePAM no
 
 > Lines starting with a hash are comments and are being ignored when `sshd` reads the file. They are intended for instructions and for conveniently providing you with "templates" – settings you can easily enable by removing the hash at the beginning. To do this in vim, you move the cursor to the specific line (you can search using `/`) and then press `0` to get to the first column, then `x` to delete the character under the cursor.
 
-
-> Whenever you changed `sshd_conf` you need to restart `sshd` in order for the changes to take effect. `sshd` is not consantly checking for changes in that file, instead it reads it once when it starts.
-
 To restart `sshd` on Linux, you doL
 
 ``` sh
@@ -164,6 +161,8 @@ $ service ssh restart
 ```
 
 On OSX, you simply uncheck the checkbox next to *Renote Login*, count to three and check it again.
+
+> Whenever you changed `sshd_conf` you need to restart `sshd` in order for the changes to take effect. `sshd` is not consantly checking for changes in that file, instead it reads it once when it starts.
 
 When you try to login to your partner's machine now, you should not be asked for a password anymore!
 If the login does not work, check the file permissions.
