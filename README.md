@@ -11,6 +11,190 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 - [Session 3](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-3-2015-10-01)
 - [Session 4](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-4-2015-10-08)
 - [Session 5](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-5-2015-10-15)
+- [Session 6](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-6-2015-10-22)
+- 
+# Session #6 2015-10-22
+
+## Seting up your computers to host a pair programming session
+
+### ssh and sshd
+We revisited what needs to be set-up in order to allow a user to log in remotely into a computer via `ssh`.
+
+0. we need to have a user-account on the remote machine. For now we all share the same account name: `pair`
+1. `sshd` (the ssh daemon) must be running on the remote machine (*remote machine* and *server* are used as synonyms here)
+2. `sshd` should be configured to disallow password-based authentication and demand authentication based on a private/public key-pair. This prevents an attacker to gain access by guessing the password.
+3. the private key must be on the client computer (typically it is called `id_rsa` and resides in the the `.ssh` dorectory which in turn is located in the user's home directory)
+4. the public key must be on the server in the `authorized_keys` file in the `.ssh` directory in the home directory of the account that we want to have access to remotely.
+5. the file modes and ownerships of all files inside `.ssh` on the client and the server need to be pretty restrictive.
+
+### Creating a user account
+
+We created the user account `pair` on both of your computers. The pair user will be used by all she.coders to take part in a pair programming session that you host. The normal approach would be to create one account for each user and than put the public key of each she.coder into the respective .ssh directory of that user. We save a lot of time by using just one account for "the others".
+
+On OSX we simply used the *Users and Groups* panel in *System Preferences* to create a user account called `pair`. Set all other values to `pair` too, including the password. We will disable password-based authentication altogether in one of the next steps.
+
+On Linux we used the useradd script to add the user and the `passwd` command to set the password.
+
+``` sh
+$ sudo useradd pair
+$ sudo passwd pair
+```
+
+We then created the new user's home directory
+
+``` sh
+$ sudo mkdir /home/pair
+```
+
+You can now try it out by entering
+
+``` sh
+su pair
+```
+
+It will ask for pair's password and when you can login, you know you successfully created the user account.
+
+Incase the pair user is configured to use a shell different from `bash`, you can correct this in the file `/etc/passwd` (use `sudo vim /etc/passwd` and be very careful not to mess up the file)
+
+### Installing sshd
+
+On Ubuntu we installed `sshd` like this:
+
+``` sh
+$ sudo apt-get install openssh-server
+```
+
+On Mac OSX, `sshd` is pre-installed. You just need to enable it by clicking the checkbox next to *Remote Login* in the *Sharing* panel of *System Preferences*. You can restrict who can login remotely in this panel too. (restrict it to the user `pair`)
+
+### First attempt to login remotely
+
+You can now try to login as `pair` on your partner's machine. For this to work, you need to know the name of your partner's computer. You can find out yours with
+
+``` sh
+$ hostname
+```
+
+You should be able to login as `pair` on your partner's computer by doing this:
+
+``` sh
+$ ssh pair@computername
+```
+
+You will be asked for the password of the `pair` user and after that you are talking to a shell that runs on the other one's computer!
+
+### Public-Key Authentication
+
+Now we tell `sshd` to not accept passwords but to only allow access if the user can proof her identity by owning a specific private key. For this to work, we need to put her *public key* on the host computer.
+
+> The *host computer* (or server) is where sshd is running, the client computer is where `ssh` is running.
+
+You created a directory called `.ssh` in the home directory of the pair user.
+
+On OS X, you do:
+
+``` sh
+$ sudo mkdir /Users/pair/.ssh
+```
+
+on Linux, you do
+
+``` sh
+$ mkdir /home/pair/.ssh
+```
+
+Because you created the directory using sudo, it was created by the `root` user and therefor is owned by `root`. You need to change the directory's ownership by using `chown` and set its permissions to `755` using `chmod`.
+
+Now we put your partner's public key into `.ssh/authorized_keys` in pair's home directory. We did this using `vim`.
+I showd you the vim command `:!r`. It executes a shell comand from within vim (much like `:!`), but in addition, it captures the command's output and appends it to the text that is currently being edited! We used
+
+```
+:r! curl https://github.com/username.keys
+```
+
+to quickly download a public key from github and add it to the file. We realized that this command also adds a couple of lines of garbage to the files. We discussed that this is the result of `curl`'s attempt to display information about the download progress in the terminal. We talked about the two different output channels `stdout` and `stderr` of a UNIX program and that `curl` is using `stderr` to output the characters that are itended for human consumption on `stderr`. `stdout` on the other hand is used to output the actual data that is being downloaded. In general terms: `stdout` often is intended to be further processed by another program, while `stderr` often is intended for a human.
+
+Because `curl` expects `stderr` to be connected to a terminal, it uses control sequences that a terminal would interpret as "move the cursor to the beginning of the current line" and such. However, in our scenario using `:r!` both `stdout` and `stderr` were caputred by vim and ended up in the text file.
+
+I showdd to you that `ls` is smarter than `curl`. If you do
+
+```
+:!r ls
+```
+inside vim, a listing of the current directory will be appended to the text in the editor. `ls` however detects that `stdout` is not connected to a terminal and adapts it's behaviour. It is not using ANSI sequences to make the output colorful, and it even puts each name on its own line rather than using multiple columns.
+
+To fix `curl`'s behaviour, we added the line
+
+```
+set shellredir=>
+```
+
+to your `.vimrc` file. Now only `stdout` will be caputred by vim.
+
+> Internally `vim` uses the same output redirection we used in the last session. The internal variable `shellredir` tells vim what character to use to redirect the shell's output. By default, `vim` uses a longer sequence of cahracters that redirects `stderr` to `stdout`. More on this in a later session.
+
+#### Configuring `sshd`
+
+You've already encountered the directory `etc` in the root of the file system when we talked about `/etc/passwd`
+
+> In the contect of the file-system `root` means the top-level directory)
+
+> `/etc` contains configuration files for various `daemons`.
+
+First you need to locate the file called `sshd_conf`. It is a text file containing the settings of the ssh daemon. It is located eihter at `/etc/sshd_conf` or at `/etc/ssh/sshd_conf`, depending on your UNIX distribution.
+
+Make sure you have the following lines in this file and that they do not start with a hash (#) character.
+
+```
+RSAAuthentication yes
+PubkeyAuthentication yes
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM no
+```
+
+> Lines starting with a hash are comments and are being ignored when `sshd` reads the file. They are intended for instructions and for conveniently providing you with "templates" – settings you can easily enable by removing the hash at the beginning. To do this in vim, you move the cursor to the specific line (you can search using `/`) and then press `0` to get to the first column, then `x` to delete the character under the cursor.
+
+> Whenever you changed `sshd_conf` you need to restart `sshd` in order for the changes to take effect. `sshd` is not consantly checking for changes in that file, instead it reads it once when it starts.
+
+To restart `sshd` on Linux, you doL
+
+``` sh
+$ service ssh restart
+```
+
+On OSX, you simply uncheck the checkbox next to *Renote Login%, count to three and check it again.
+
+When you try to login to your partner's machine now, you should not be asked for a password anymore!
+If the login does not work, check the file permissions.
+
+`authorized_keys` should be `644`
+`.ssh` should be `744`
+`id_rsa.pub` should be `644`
+`id_rsa` should be `600`
+
+Also make sure that all the files in pair's home directory are actually owned by pair!
+
+We had some trouble getting the password-less `ssh`-login to work. In the end we realized the problems were caused by `authorized_keys` being at the wrong location (in `~pair` instead of `~pair/.ssh`) and/or having the wrong permissions and/or owner.
+
+> `~pair` is short for "pair's home directory". You can use it with `cd` for example: `cd ~pair`.
+
+### tmux
+
+The only thing missing to host a pair programming session is `tmux`
+
+On OSX, you need to install [homebrew](http://brew.sh/) first. Then you can
+
+``` sh
+$ brew install tmux
+```
+
+On Linux, you simply
+
+``` sh
+$ sudo apt-get install tmux
+```
+
+See last session's protocol for a reminder of how to start or join a `tmux` session.
 
 # Session #5 2015-10-15
 
