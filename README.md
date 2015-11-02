@@ -12,7 +12,7 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 - [Session 4](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-4-2015-10-08)
 - [Session 5](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-5-2015-10-15)
 - [Session 6](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-6-2015-10-22)
-- 
+
 # Session #6 2015-10-22
 
 ## Seting up your computers to host a pair programming session
@@ -154,6 +154,7 @@ UsePAM no
 
 > Lines starting with a hash are comments and are being ignored when `sshd` reads the file. They are intended for instructions and for conveniently providing you with "templates" – settings you can easily enable by removing the hash at the beginning. To do this in vim, you move the cursor to the specific line (you can search using `/`) and then press `0` to get to the first column, then `x` to delete the character under the cursor.
 
+
 > Whenever you changed `sshd_conf` you need to restart `sshd` in order for the changes to take effect. `sshd` is not consantly checking for changes in that file, instead it reads it once when it starts.
 
 To restart `sshd` on Linux, you doL
@@ -162,15 +163,15 @@ To restart `sshd` on Linux, you doL
 $ service ssh restart
 ```
 
-On OSX, you simply uncheck the checkbox next to *Renote Login%, count to three and check it again.
+On OSX, you simply uncheck the checkbox next to *Renote Login*, count to three and check it again.
 
 When you try to login to your partner's machine now, you should not be asked for a password anymore!
 If the login does not work, check the file permissions.
 
-`authorized_keys` should be `644`
-`.ssh` should be `744`
-`id_rsa.pub` should be `644`
-`id_rsa` should be `600`
+- `authorized_keys` should be `644`
+- `.ssh` should be `744`
+- `id_rsa.pub` should be `644`
+- `id_rsa` should be `600`
 
 Also make sure that all the files in pair's home directory are actually owned by pair!
 
