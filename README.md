@@ -12,6 +12,61 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 - [Session 4](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-4-2015-10-08)
 - [Session 5](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-5-2015-10-15)
 - [Session 6](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-6-2015-10-22)
+- [Session 7](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-7-2015-10-29)
+
+# Session #7 2015-10-29
+
+## Creating a team page
+
+You were starting work on your kitchen-session team page. I asked you to pick 5 symbols from [fontello](http://fontello.com/) and it was your job to find out how to download and embed the font in your own html page.
+
+## Make yourself at home on a remote server
+
+We started a shared `tmux` session on my computer. Using `ssh`, I then logged into a server I rented. That server (it is called "hermes") is somewhere in a data-center in the south of Germany and it is on the public Internet, which means, it has its own unique *IP address* (more on this later) and can be reached by any other computer on the Internet.
+
+> Our work computers are normally behind a firewall, which means they share one public IP address and cannot be reached from outside the LAN (local area network). Special steps must be taken if you want your computer to be exposed on the Internet (for example because you want to pair program with a remote partner). We'll talk about that in a later session. Inside the LAN, the computers *do* have unique IP addresses too, however, those are not valid outside the LAN.
+
+Other than being publicly reachable, there's just one difference between our computers and hermes: It has no screen and no keyboard. Everything else is pretty much the same.
+
+I used `su` to become superuser on hermes and than asked you to make user accounts for yourselves to practice what we've learned in the previous session.
+
+We discussed the differences between `su` and `sudo`.
+
+- `su` changes your identity by starting a new shell as a different user. By default you become super user (the user called `root` that has no restrictions whatsoever). However, you can also specify a different account name. For example `su pair` turns you into the pair user. `su` always asks for the password of the user you want to become. WHen done, you end the new shell by typing `exit`.
+
+- `sudo` is used to *perform a single command as another user*. By default that user is `root`. However, it can be any other account if you use the `-u` option. An example would be `sudo -u pair cat /etc/passwd` to try and see if the pair user is allowed to read the `passwd` file. **Important** `sudo` is always asking for the password of *the user that runs the sudo command*, which is **not** the same password that `su` is asking for! Not all users are allowed to run `sudo` (You have to be a "sudoer"). Like `su`, `sudo` can also be used to start a new shell as a different user – just use the `-i` option: `sudo -i` starts a new shell as `root` but asks for the password of the user that runs the command. Like with `su`, you exit this new shell with `exit`.
+
+> When you get confused what your account you are currently using, just type `whoami`. When you are confused on what computer you are, tyoe `hostname`, and when you are confused what your current directory is, type `pwd`. You should be aware of these three things at any time, that's why the normally are part of the shell prompt.
+
+## Configuring the prompt
+
+Along the way we got sidetracked and created a nicer shell prompt featuring a Unicode character depciting a sun symbol! We put a line setting a prompt into `~/.bashrc`
+
+``` sh
+export PS1= TODO: Judith or Ela, pleas put your prompt code here!
+```
+
+> the file `~/.bashrc` is being executed whenever you start a shell. You can use it to configure your shell experience.
+
+Just like `/etc/sshd_conf`, `~/.bashrc` is a configuration file. However, `.bashrc` is *personal* (it is different for each user), whereas `sshd_conf` is system-wiede (the same for each user). That's why `sshd_conf` is located in `/etc` and `.bashrc` is located in a user's home.
+
+## Using tmux panes
+
+Inside our shared tmux session, we used multiple so-called "panes" – little sub-terminals with their own shell. In each pane we ssh'ed into a different machine or su'ed into a different user on the same machine. This is a convenient way to quickly switch between accounts and machines. We used `Ctrl-B` `%` to create a new pane and `Ctrl-B` and a cursor key to switch between panes. See the [tmux cheat sheet](https://gist.github.com/MohamedAlaa/2961058#panes-splits) to find out more.
+
+> "tmux" stands for "terminal multiplexer", provoding multiple sub-terminals in one is its main purpose.
+
+In the end you were able to passwordlessly login from your computer to your own account on hermes using `ssh` and you even know how to set a custom prompt on this computer!
+
+Next time we will use hermes to host your team page on the web.
+
+## Homework
+
+1. Many people re-configure the so-called "Prefix-key" in `tmux` to be `Ctrl-A` instad of `Ctrl-B`. Find out how to do that!
+2. Many people also re-configure the useless (and annoying) `Caps-Lock` key to be another `Ctrl` key. Find out how to do that in your operating system.
+3. Start tmux, create some panes and switch between them, using `Caps-Lock A` as your prefix key!
+
+
 
 # Session #6 2015-10-22
 
