@@ -13,6 +13,81 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 - [Session 5](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-5-2015-10-15)
 - [Session 6](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-6-2015-10-22)
 - [Session 7](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-7-2015-10-29)
+- [Session 8](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-8-2015-11-06)
+- [Session 9](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-9-2015-11-13)
+
+# Session #9 2015-11-13
+
+- scp, tar, rsync, curl, unzip
+- man pages
+- pipes, sort, uniq
+- 
+Moving to a new computer
+
+# Session #8 2015-11-06
+
+## Orientation
+
+We used travelling from one city to another city in another country as a metaphor for remote login to another computer via ssh.
+
+The computers are countries. In order to enter a country, you need to prove your identity (your passport is checked at the border. This is what `sshd` is doing when you travel to another computer. It check's whether you own a private key that is acceptable for the user account you want to use on the remote computer. You can even have multiple identities (imagine you are an agent), so you can be user "regular" on one computer (country) and user "pair" in anohter country (computer).
+
+In order to not get confused about the **who** and **where** make a clear distinction between your account name (username) and your computer's name. It makes sense to name your computer after a *thing* rather than a person and use your initials, or some other combination of characters that represent you, as your account name. Try to use lowercase letters only, it makes life easier.
+
+> While Apple's convention of assigning computers names like "Eva's Macbook Pro" supports making this distinction between machines and persons, it also results in very cumbersome machine names. Choose a shorter name that you and others can easily remember and that does not contain spaces or special characters like `'`.
+
+Of course you can change your location *within a country* (on a computer). The current location on the computer is your *currrent working directory* (returned by the command `pwd`). It is sort of the city you are currently visiting, *or street address, if you prefer).
+
+You can change your identity (who you are) by using `sudo` or `su`. Changing your identity (user account) will not change *where you are* (city or country).
+
+You can change where you are within a country by using `cd`. Changing where you are will not change *who* you are.
+
+The prompt might be configured to indicate your identity, country and current location (username, computer, current working directory) or it might be configured to only show some of that information (to save space for example).
+
+Here's an example of a shell session.
+
+``` sh
+➜  dev$  ssh -p 30000 hermes
+regular@hermes:~$ su
+Password:
+root@hermes:/home/regular# exit
+exit
+regular@hermes:~$ exit
+logout
+Connection to hermes closed.
+➜ dev$
+```
+
+It starts on my own computer. The prompt does not show who I am or what computer I am on. The only thing it displays it the last segment of the current working directory. All I know is that I am in a directory called `dev`. I do not see where that directory is.
+
+I then useed `ssh` to a computer called `hermes` that has `sshd` listening on port 30000. Since I did not specify any user account to ssh, ssh will try to log me in with the same username I currently have (which is `regular`).
+
+On hermes my prompt is configured to show my account name, the name of the computer I am on, as well as the complete current working directory. Because I ended up in my home directory on hermes, the current working directory is displayed as `~`.
+
+Than I used `su` (switch user) to change my identity to `root`. Notice how **my location did not change** but is **now displayed differently** (not as `~`). Because I am now root, I am no longer in my home directory, even though I am still in `/home/regular/`. It is not *my* home directory anymore, because I **am** no longer "regular", I am root now, and root has its home directory somwhere else. I changed *who* I am, not *where* I am. The new identity did however change my relationship to the directory "/home/regular". It used to be my home, now it is just some directroy without a special meaning, so it is not abbreviated to `~` any longer.
+
+Because `su` starts a new shell, I used `exit` to get out of that new shell. Now I am regular again. `ssh` also started a new shell. I exit this one too, and I am back on my laptop.
+
+As mentioned in the last session, it is critical to always be aware of what computer you are on, which directory is currently your working directory and what identity you are currently using. Use `hostname`, `pwd` and `whoami` when in doubt. Or, if your prompt is configured to display all that information, look at your prompt, it's your torch in the dark.
+
+## Networking
+
+We revisted the difference between circuit switching (telephone network) and packet switching (computer networks) and how paket switching is more efficient, because a physical wire is shared by multiple parties.
+
+We talked about the network stsck (OSI layers) as an example of separation of concerns. The bottom-most layer is concerned with electrical signals and wires. It's job is to transfer a bunch of bits from one end of the wire to the next. Two computers that are connected with the wire constantly check whetehr that connection is still good by trying to send a specific bit-pattern (called a "ping"). When a computer sends a "ping" it responds with anither bit-pattern, called "pong". WHen one computer sent a ping to another computer and did not receive a pong within a reasonable amount of time, it considers the link to be broekn (people say: "the link is down").
+
+This ping-pong thing is considered to happen "on a higher layer" thatn the physical transportation of bits. This stacking of concepts is not only a mental picture, systems are carefully designed in layers. The advantage is that you can exchange the physical layer, say, from was copper wires, to fibre glass without the code that does the ping-pong having to change at all. This is the goal of good software architecture: being able to swap out or modify one part without having to change other parts.
+
+The computers are arranged in sort of a spider-web, so some computers are connected to multiple other computers. The key difference between circuit switching and packet switching is this: WHen computer A wants to send information to  computer B, *it needs no direct connection to B*. Instead it asks one of the computers that it *has* a direct connection to – let's call it C, to forward the data into the general direction of B. So C will forward the data to the computer that it thinks is closer to B than itself is. One says the data "hops" from one computer to another. Sentences like "The paket went of 34 hops to reach its destination" are common.
+
+Because in such a network there are more than just one path (or "route") a data paket can take, it is not critical if some of the links go down from time to time, the computers in the network will figure out an alternative route, one where the ping-pong works for all the hops.
+
+Instead of the names A, B and C that we use in the examples, computers use numbers (what else?) to address each other. Traditionally these numbers were coded using 32 bits, so you can have 4294967296 different ones. (Remeber the rice-on-chess-board story?). This standard, called Internet Protocol Version 4 – or IPv4 for short, is now outdated and slowly replaced by IPv6, which uses 64 bits for computer addresses, which makes possible 18446744073709551616 different addresses – enough for every grain of sand in earth.
+
+The layer that sends data packets from one address to anoter is called `UDP`, imagine it being a pretty bad delivery service for postcards – the name fits this mental image pretty well, too. It stands for User Datagram Protocol. It's postcard rather than letters, because everybody who is handling it is able to read the contents of a UDP datagram. is trying to deliver your postcard to the address you specified. But it is not trying very hard. Incase any problem occurs, for example all links leading to the destination are down, the data paket just vanishes. Computers are also allowed to just stop UDP packet forwarding incase they are too busy to handle all the traffic. Even though it is trribly unreliable, 
+
+
+## 
 
 # Session #7 2015-10-29
 
