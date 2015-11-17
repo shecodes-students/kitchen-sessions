@@ -70,24 +70,6 @@ Because `su` starts a new shell, I used `exit` to get out of that new shell. Now
 
 As mentioned in the last session, it is critical to always be aware of what computer you are on, which directory is currently your working directory and what identity you are currently using. Use `hostname`, `pwd` and `whoami` when in doubt. Or, if your prompt is configured to display all that information, look at your prompt, it's your torch in the dark.
 
-## Networking
-
-We revisted the difference between circuit switching (telephone network) and packet switching (computer networks) and how paket switching is more efficient, because a physical wire is shared by multiple parties.
-
-We talked about the network stsck (OSI layers) as an example of separation of concerns. The bottom-most layer is concerned with electrical signals and wires. It's job is to transfer a bunch of bits from one end of the wire to the next. Two computers that are connected with the wire constantly check whetehr that connection is still good by trying to send a specific bit-pattern (called a "ping"). When a computer sends a "ping" it responds with anither bit-pattern, called "pong". WHen one computer sent a ping to another computer and did not receive a pong within a reasonable amount of time, it considers the link to be broekn (people say: "the link is down").
-
-This ping-pong thing is considered to happen "on a higher layer" thatn the physical transportation of bits. This stacking of concepts is not only a mental picture, systems are carefully designed in layers. The advantage is that you can exchange the physical layer, say, from was copper wires, to fibre glass without the code that does the ping-pong having to change at all. This is the goal of good software architecture: being able to swap out or modify one part without having to change other parts.
-
-The computers are arranged in sort of a spider-web, so some computers are connected to multiple other computers. The key difference between circuit switching and packet switching is this: WHen computer A wants to send information to  computer B, *it needs no direct connection to B*. Instead it asks one of the computers that it *has* a direct connection to – let's call it C, to forward the data into the general direction of B. So C will forward the data to the computer that it thinks is closer to B than itself is. One says the data "hops" from one computer to another. Sentences like "The paket went of 34 hops to reach its destination" are common.
-
-Because in such a network there are more than just one path (or "route") a data paket can take, it is not critical if some of the links go down from time to time, the computers in the network will figure out an alternative route, one where the ping-pong works for all the hops.
-
-Instead of the names A, B and C that we use in the examples, computers use numbers (what else?) to address each other. Traditionally these numbers were coded using 32 bits, so you can have 4294967296 different ones. (Remeber the rice-on-chess-board story?). This standard, called Internet Protocol Version 4 – or IPv4 for short, is now outdated and slowly replaced by IPv6, which uses 64 bits for computer addresses, which makes possible 18446744073709551616 different addresses – enough for every grain of sand in earth.
-
-The layer that sends data packets from one address to anoter is called `UDP`, imagine it being a pretty bad delivery service for postcards – the name fits this mental image pretty well, too. It stands for User Datagram Protocol. It's postcard rather than letters, because everybody who is handling it is able to read the contents of a UDP datagram. is trying to deliver your postcard to the address you specified. But it is not trying very hard. Incase any problem occurs, for example all links leading to the destination are down, the data paket just vanishes. Computers are also allowed to just stop UDP packet forwarding incase they are too busy to handle all the traffic. Even though it is trribly unreliable, 
-
-
-## 
 
 # Session #7 2015-10-29
 
