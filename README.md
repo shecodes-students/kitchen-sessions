@@ -18,10 +18,128 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 
 # Session #9 2015-11-13
 
+## Piping
+
+We talked about how to combine small programs like `cat`, `sort` and `uniq` to process a stream of data.
+
+In this example
+
+``` sh
+$ cat names1 names2 | sort | uniq
+```
+
+the program `cat` reads the two files `names1` and `names2`, con**cat**enates (hence the name) their content and pushes the resulting data stream to _stdout_.
+
+> `stdout` is one of two output channels that UNIX programs can use to output data they produce. `stdout` is meant for results and the other one, `stderr,` is meant for error messages or other messages that are intended to be read by humans (as in "not meant to be interpreted by machine"). Both of these channels (or _streams_) are connected to the terminal unless you explicitly redirect them to files (using `>`) or pipe them to anohter program (using `|`).
+
+The result of `cat` is then fed (_piped_) into `sort`. `sort` reads all of `cat`'s output into memory, sorts all lines of text aphabetically and outputs them again.
+
+> Each UNIX program has one input channel called `stdin`. `stdin` normally is connected to the terminal as well. So, while a program runs, it can consume your keystrokes by reading from `stdin`. You can pipe another program's output into `stdin` (by using `|`) or you can redirect `stdin` to come from a file (using `<`).
+
+The sorted output is then piped into `uniq`. `uniq` simply discards (filters) duplicate lines when these lines immediately follow each other.
+
+> When you start a program that reads from `stdin` by default (like `sort` or `uniq`) without piping some other program's output into it and without redirecting `stdin` to come from a file, it will read your keystrokes. You will often have the impression that "nothing is happening" when you start such a program, because it typically does not prompt you for input. It will simply sit there and silently wait for you to type. You can tell that this is happening by the absence of your shell prompt. You simply start typing and press `Ctrl-D`, which is defined by ASCII to be the [End Of Transmission character](https://en.wikipedia.org/wiki/End-of-transmission_character) (EOT).
+
+When you just run `uniq` for example, your cursor will  be placed in a new line with no prompt at all. `uniq` is trying to read from `stdin`, which is connected to your terminal. Hence, unless you tupe something, `uniq` will keep waiting. Whn you type a line of text and hit enter, `uniq` will output that exact line of text (so in your terminal you see it a second time). This happens for every line of input, unless it is _exactly_ the same line as the previous one, in which case `uniq` will not send it back to you (by writing it to `stdout`). `uniq` keeps reading until yout hit `Ctrl-D`.
+
+Try this:
+
+``` sh
+$ uniq
+a
+a
+b
+b
+b
+a
+a
+a
+^D
+```
+
+(`^D` means you press Control-D).
+
+If you try the same with sort (do it now!), you will realise that `sort` will not output anything until you hit `^D`. That's because you can only sort a list of items if you know all the items! Developers say: "`sort` _buffers_ all the input". A `buffer` is a chunk of memory that is used temporarily. Remember the paper tape with 5 bit code that allows a telegraphy typist to have a sip of coffee? That's a buffer.
+
+On the other hand, `cat` and `uniq` do not need to buffer. Developers say "`cat` and `uniq` _stream_ data from `stdin` to `stdout`. The mental image is that of a river. `cat` is the source in the mountains. Water flows down into `sort`. Because `sort` needs to buffer the data, it acts like a dam – it holds back the data (water) until it slurped up everything. Only then data starts streaming out of `sort` until its pool or lake (buffer) is empty. Downhill of the dam the water is streaming again. It flows into `uniq`, which filters out some dirt, but lets most of the water (lines of text) pass through without any holdup.
+
+> Did you wonder why uniq only discards duplicate lines that immediatly follow each other instead of making sure that all duplicates are discarded no matter where they occur in the text? The answer is: It is designed this way so it does not need to buffer!
+
+Why is buffering bad? Because it is "expensive". With "expensive" developers mean: it demands a lot of resources that are limited, like memory or CPU. Imagine, in the example above, the files names1 and names2 are one Terabyte in size each. That would not be a problem for `cat` or `uniq` at all, because _they_ only deal with a piece of the data at a time (a piece of data is often called a `chunk`). `sort` on the other hand needs to hold _all_ of the names in memory in order to produce output – that's 2 Terabyte! Most likely, this is impossible, because the computer does not have that much memory. (modern laptops now have between 2 and 16 Gigabytes of RAM, a Terabyte is 1024 Gigabytes. Servers might have 24 Gigabytes or even more, a Terabyte of RAM is very expensive and does not fit into most computers).
+
+Let's get through the above example step by step.
+
+``` sh
+$ cat names1
+jan
+ela
+judith
+
+$ cat names2
+nicole
+kathrin
+jan
+
+$ cat names1 names2
+jan
+ela
+judith
+nicole
+kathrin
+jan
+
+$ cat names1 names2 | sort
+ela
+jan
+jan
+judith
+kathrin
+nicole
+
+$ cat names1 names2 | sort | uniq
+ela
+jan
+judith
+kathrin
+nicole
+```
+
+You now know what `piping`, `streaming` and `buffering` mean. Or, at least, you have an idea.
+
+## Manual Pages
+
+UNIX comes with a build-in manual. The program `man` is used to display a manual for a specific program. These manual pages (man pages) are not meant as tutorials, they are fairly technical and need some time to get uesed to. Furthermore different styles exists. man pages written for th GNU project look a bit different than ones written for BSD. man pages are very useful if you already know what a program does in generalm but forgot about the exact details, like what the order of arguemnts in `chmod` are or if the portnumber in `scp` is specified with a lowercase or uppercase `p`.
+
+The most important part is the `SYNOPSIS`. It lists all the different ways you can run the program and spcifies which parts are optional (by putting them in square brackets).
+
+### Homework
+
+- read the man pages of `sort` and `uniq`.
+- Who wrote your versions of sort and uniq?
+- What operating system was it written for?
+- Given a file with numbers called `numbers`, write a command line that outputs all numbers thst appear more than once. Output the numbers in descending order.
+
+    Example:
+    ```
+    1
+    2
+    3
+    4
+    3
+    1
+    130
+    1
+    ```
+    
+    result should be:
+    
+    ```
+    3
+    1
+    ```
+> The UNIX philosophy is to create small programs, that do one particular thing by streaming data from `stdin` to `stdout` and avoid buffering whenever possible. These programs can easily be combined to solve bigger problems, using a minumum of resources.
+
 - scp, tar, rsync, curl, unzip
-- man pages
-- pipes, sort, uniq
-- 
 Moving to a new computer
 
 # Session #8 2015-11-06
