@@ -294,18 +294,18 @@ One easy way to do this:
 - make sure that you can login to your account on the new computer from the old computer by using your password
 	
 	``` sh
-	me@old ~$ ssh newcomputer
+	me@oldcomputer ~$ ssh newcomputer
 	Password:
-	me@new ~$ exit
-	me@old ~$
+	me@newcomputer ~$ exit
+	me@oldcomputer ~$
 	```
 - now copy your stuff using scp
 
 	``` sh
-	me@old ~$ scp .vimrc .tmux.conf.ssh new:~
+	me@oldcomputer ~$ scp .vimrc .tmux.conf.ssh newcomputer:~
 	```
 	
-	(I am using `new` and `old` as placholders for the names of your new and old computer)
+	(I am using `newcomputer` and `oldcomputer` as placholders for the names of your new and old computer)
 	
 	
 # Session #7 2015-10-29
