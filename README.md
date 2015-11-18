@@ -292,6 +292,7 @@ One easy way to do this:
 
 - first install sshd on the new computer. On Linux simply run `sudo apt-get install openssh-server`
 - make sure that you can login to your account on the new computer from the old computer by using your password
+	
 	``` sh
 	me@old ~$ ssh newcomputer
 	Password:
