@@ -38,7 +38,7 @@ The result of `cat` is then fed (_piped_) into `sort`. `sort` reads all of `cat`
 
 The sorted output is then piped into `uniq`. `uniq` simply discards (filters) duplicate lines when these lines immediately follow each other.
 
-> When you start a program that reads from `stdin` by default (like `sort` or `uniq`) without piping some other program's output into it and without redirecting `stdin` to come from a file, it will read your keystrokes. You will often have the impression that "nothing is happening" when you start such a program, because it typically does not prompt you for input. It will simply sit there and silently wait for you to type. You can tell that this is happening by the absence of your shell prompt. You simply start typing and press `Ctrl-D`, which is defined by ASCII to be the [End Of Transmission character](https://en.wikipedia.org/wiki/End-of-transmission_character) (EOT).
+> When you start a program that reads from `stdin` by default (like `sort` or `uniq`) without piping some other program's output into it and without redirecting `stdin` to come from a file, it will read your keystrokes. You will often have the impression that "nothing is happening" when you start such a program, because it typically does not prompt you for input. It will simply sit there and silently wait for you to type. You can tell that this is happening by the absence of your shell prompt. You simply start typing and, when done, press `Ctrl-D`, which is defined by ASCII to be the [End Of Transmission character](https://en.wikipedia.org/wiki/End-of-transmission_character) (EOT).
 
 When you just run `uniq` for example, your cursor will  be placed in a new line with no prompt at all. `uniq` is trying to read from `stdin`, which is connected to your terminal. Hence, unless you tupe something, `uniq` will keep waiting. Whn you type a line of text and hit enter, `uniq` will output that exact line of text (so in your terminal you see it a second time). This happens for every line of input, unless it is _exactly_ the same line as the previous one, in which case `uniq` will not send it back to you (by writing it to `stdout`). `uniq` keeps reading until yout hit `Ctrl-D`.
 
@@ -112,6 +112,8 @@ UNIX comes with a build-in manual. The program `man` is used to display a manual
 
 The most important part is the `SYNOPSIS`. It lists all the different ways you can run the program and spcifies which parts are optional (by putting them in square brackets).
 
+> man pages offer _a lot_ of information. Most of it is irrelevant for a given task and some of it you'll never need to understand at all. The trick is to find the parts that are relevant to you *now* and skim over the rest. Don't get discouraged when you do not understand 80% of what the man pages say, just ignore the parts that are confusing to you and keep looking for the piece of information you need. This requires some getting used to, but it is generally a good skill to have.
+
 ### Homework
 
 - read the man pages of `sort` and `uniq`.
@@ -139,8 +141,96 @@ The most important part is the `SYNOPSIS`. It lists all the different ways you c
     ```
 > The UNIX philosophy is to create small programs, that do one particular thing by streaming data from `stdin` to `stdout` and avoid buffering whenever possible. These programs can easily be combined to solve bigger problems, using a minumum of resources.
 
-- scp, tar, rsync, curl, unzip
-Moving to a new computer
+# more on ssh
+
+We discovered that `ssh` takes a second, optional argument. Instead of connecting to a server to start a new remote shell like this:
+
+``` sh
+$ ssh -p 22000 me@blackbox
+```
+
+you can specify what command to run on the remote machine:
+
+``` sh
+$ ssh me@blackbox ls ~
+```
+
+After running the command (`ls ~` in this case), `ssh` ends the connection to the remote computer. The example above is a quick way to see the contents of me's home directory on "blackbox".
+
+## Piping through ssh
+
+The beauty of this is that `ssh` will connect it's own `stdin`, `stdout` and `stderr` to the streams of the command it executes remotely. So, incase blackbox does have 2 Terabytes of memory, we can solve our memory problem from above by just running `sort` on blackbox!
+
+``` sh
+$ cat names1 names2 | ssh me@blackbox sort | uniq
+```
+
+(of course this adds the penalty of having to transfer 2 Terabyte back and forth over the network)
+
+## Tunneling
+
+This technique is sometimes called "ssh tunnel". The mental image is: you open a portal on one computer that magically is connected to a portal on another computer. Whatever you put in one portal ends up on the other end – a bit like teleportation. An _ssh tunnel_ is an encrypted pipe betwwen computers.
+
+Turns out that `scp` is using an ssh tunnel behind the scenes. When you copy a file, it does something like this:
+
+``` sh
+$ cat file  | ssh other_computer "cat - > file"
+```
+
+> the man page about `cat` says: When you specify '-' as the argument, `cat` simply outputs what it gets from `stdin`, it then acts like a neutral piece of piping. We need it anyway, because we need to specify a program to be run on the remote computer. So we use cat here simply to redirect `stdout` into a file on the remote computer.
+
+> We need quotes around `cat - > file` to make sure that the whole thing is interpreted as the argument to `ssh`. If we don't use quotes, the "> file" part will happen on the local machine, not on the remote one!
+
+## Streaming multiple files
+
+`scp` also has the `-r` option, that recursively copies a whole directory of files. Who does it do that over ssh? The cat approach from above certainly doesn't work.
+
+The solution is to combine all the files that need to be copied into one file, transfer that file and, on the other machine, separate the files again.
+
+We've already seen that `cat` can be used to concatenate files, in other words: turning a bunch of files into one file. However, it does this in a way that is irreversable. After concatenation, it is not possible to find the boundaries of the original files within the big file. Consequently it is not possible to "unpack" them.
+
+Furhtermore, a file is more that just its content. You also would want to copy the file's owner and group and the file's mode (permissions). Not even the file names are included in what `cat` produces.
+
+The solution is a program that creates an `archive`. An archive is a file that contains multiple other files _with_ thair meta data. Originally this was invented to store files on magnetic tape. A tape is not more than a stream of bits that can be recorded and played back. So people needed a way to convert multiple files into a single stream, record that stream on tape and later, read back the stream and convert it back into the original files.
+
+The program that does this is `tar`. The name stands for "tape archives". Tapes are long gone, but tar is still around, because the problem of combining multiple files into one stream in a way that is reversable still remains.
+
+tarfiles (also called [tarballs](http://images.google.de/imgres?imgurl=http://supermensa.org/wiki/images/thumb/d/d0/Tar1.jpg/250px-Tar1.jpg&imgrefurl=http://supermensa.org/wiki/index.php/Tarball&h=162&w=250&tbnid=NMzeDxPeCDTwKM:&docid=WVlSXn9pNBhBdM&ei=nEBMVp-LPMH_O8mwv4gD&tbm=isch&iact=rc&uact=3&page=2&start=26&ved=0CJgBEK0DMCZqFQoTCJ_JrafQmckCFcH_DgodSdgPMQ) re often used as a way to publish software packages in the UNIX world. They work like zipfiles Zip started its life as a commercial product and is patented – that's why it is not very popular in the open source community.
+
+We used `tar` to package up your website, copy it over to `hermes` and unpack it there again. I showed you how you can avoid creating a tarball at all, by streaming `tar -c` on the local machine into `tar -x` on the remote host!
+
+``` sh
+$ tar -c website | ssh -p 30000 hermes | tar -x -C /var/www
+```
+
+> The nice thing about these one-liners: after editing your website in `vim`, you can simply use `cursor up` to find this one line of shell code again and press `enter` et voila: the updated website is online.
+
+This is how `scp -r` _could_ be implemented behind the scenes.
+
+# Rsync
+
+We discussed the limitations of the tar-through-ssh-tunnel approach and `scp`: They always transfer _all_ of the files, no matter if they have changed or not.
+
+A solution to this is `rsync`. I showed you how you can specify the program that `rsync` should use for tunneling with the `-e` option.
+
+``` sh
+$ rsync -a -e "ssh -p 30000" wensite/ hermes:/var/www/
+```
+
+> `-a` stands for "archive". It instructs `rsync` to also copy meta data (owner, group, permissions)
+
+Rsync uses `ssh` to start a version of itself on the remote machine. The two programs then communicate to find out what files (or what part of what file) need to be transferred and then transfer it.
+
+> When you add `-v`, you can watch `rsync` doing it's magic. `v` stands for "verbose", a common term that means: "talk to me!"
+
+``` sh
+$ rsync -av -e "ssh -p 30000" wensite/ hermes:/var/www/
+```
+
+For completeness' sake: The programs `zip` and `unzip` also exists in the UNIX world. SO when you downloaded a zip file, you can easily unpack it using `unzip`. Use `man` to find out more!
+
+We used unzip to unpack the fontello files.
+
 
 # Session #8 2015-11-06
 
@@ -188,7 +278,35 @@ Because `su` starts a new shell, I used `exit` to get out of that new shell. Now
 
 As mentioned in the last session, it is critical to always be aware of what computer you are on, which directory is currently your working directory and what identity you are currently using. Use `hostname`, `pwd` and `whoami` when in doubt. Or, if your prompt is configured to display all that information, look at your prompt, it's your torch in the dark.
 
+# Moving to a new computer
 
+Some of you migrated to new computers, because your old ones broke or where too heavy to carry around all the time.
+
+To lower the time you lose when you need to move from one computer to the next, you should remember to take some important files with you!
+
+- ~/.vimrc – your vim configuration
+- ~/.tmux.conf – your tmux configuration
+- ~/.ssh – your private and public key
+
+One easy way to do this:
+
+- first install sshd on the new computer. On Linux simply run `sudo apt-get install openssh-server`
+- make sure that you can login to your account on the new computer from the old computer by using your password
+	``` sh
+	me@old ~$ ssh newcomputer
+	Password:
+	me@new ~$ exit
+	me@old ~$
+	```
+- now copy your stuff using scp
+
+	``` sh
+	me@old ~$ scp .vimrc .tmux.conf.ssh new:~
+	```
+	
+	(I am using `new` and `old` as placholders for the names of your new and old computer)
+	
+	
 # Session #7 2015-10-29
 
 ## Creating a team page
