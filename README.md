@@ -15,6 +15,241 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 - [Session 7](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-7-2015-10-29)
 - [Session 8](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-8-2015-11-06)
 - [Session 9](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-9-2015-11-13)
+- [Session 10](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-10-2015-11-20)
+
+# Session #10 2015-11-20
+
+## More on how UNIX programs communicate
+
+### TEN!
+
+Because this is our tenth session, we did something special: First we played Jeopardy (not really – we played a quiz and had the Jeopardy theme song running in the background). I was very happy with how much you remember from the previous ten weeks!
+
+In one team, We then had a retrospective where everyone wrote down on cards the things that were good, the things that were bad and the things that were ugly. The only negative thing (thus far) was that the homework assignments come too late (too close to the next session). We agreed that when they are late, we postpone checking hoemwork until one week later.
+
+I am looking forward to what you can do ten more sessions from now!
+
+### Standard I/O
+
+Some time ago we established that the terminal internally really consists of two distinct devices:
+- a keyboard connected to a Baudot-style serial transmitter, that, which each keypress, sends a series of bits (originally 7 bits according to `ASCII`, nowadays a varying number of bits according to `UTF-8`) down a transmit wire
+- a Baudot-style receiver, that, when it receives a series of bits, displays the corresponding symbol (character) on a screen and advances a cursor. It also interprets special control characters and ANSI-Escape sequences to control cursor movment, text color, etc.
+
+> I'll refer to these two components as "keyboard" and "screen" in the following paragraphs, or as "terminal" when I mean  both of them.
+
+When you open your terminal emulator, a program, the shell, is started for you and this program, like all UNIX programs, has an input channel to receive data and an output chennel to send data. These two channels are called `stdin` and `stdout` respectively. A thrid channel `stderr` exists for messages that aren't officially part of the program's output. This additional output channel can be used by the program to inform the user about success (usually this doesn't happen, no news is good news), faillure or the programs progress.
+
+> The job of `ssh` and `sshd` is to check the authenticity of both side of a remote connection. They then create encrryoted network channels for `stdin`, `stdout` and `stderr` that go from one machine to another. `ssh` then instructs `sshd` to run a program on the remote computer and connect its three IO channels (`stdin`, `stdout`, `stderr`) to the encryoted network channels (like "cross-machine pipes"). The program being started usually is the shell. However you can configure `sshd` that some other program should be run for a certain user (or a certain public-key). And, as we've seen, you can tell `ssh` explicitly what program you want to run at the other end. (we used it with `tar`). So, even though SSH stands for "Secure Shell", it really isn't a shell at all. It is a remote program launcher that encryptes data channels after checking keys. But it's _main purpose_ is making remote shell sessions secure.
+
+Imagine you login to a remote machine using `ssh` and type `vim` at the promte of the remote shell.
+This is how the characters flows through the various programs.
+
+```
+Human fingers -> keyboard -> bash -> ssh -> sshd -> bash -> vim -\    (input)
+Human eyes    <- screen   <- bash <-  ssh <- sshd  <-  bash    <-/    (output)
+```
+
+### Environment Variables
+
+`stdin`, `stdout` and `stderr` – together they are called "Standard I/O" (I/O stands for **I**nput and **O**utput) are not the only ways that a program can communicate with the world though.
+
+_Environment Variables_ are another one. They are strings with names. (A string is a couple of characters). There is for example a variable called `PATH` that specifies where `bash` looks for programs. It is a list of directories, spearated by colons (`:`) that bash looks into, one after another, to find an executable program. If the PATH is set to `/a:/b` for example, and you type `ls` at your bash prompt, `bash` would check if the file `/a/ls` exists and if that file has the `x` flag set. (Remeber: `x` is one of the flags you set with `chmod`, it means that the file is executable). If this is the case, `bash` will run the program `/a/ls`. Otherwise it will do the same check for `/b/ls` and, if it passes the check, `bash` will execute that one. If both don't exist or are not executable, bash outputs: `bash: ls: command not found` on `stderr`.
+
+We've ssen another environment variable when we've configured your bash promt: `PS1`. They are plenty of variables, you can see them all by typing:
+
+```sh
+$ env
+```
+
+A program can communicate with other programs by reading or setting environment variables.
+
+### Exit Status
+
+Because error messages are in no paritcular format, they are generally not machine-readable. Instead they are meant for human consumption. If, for example, you type into your shell:
+
+``` sh
+$ ls sdfsdf
+ls: sdfsdf: No such file or directory
+```
+
+you see a message that you have probably no trouble understanding. For a program, that's harder. That's why the _exit status code_ (or _exit code_ or _exit status_) exist. When a program is done, it can indicate whether it was successful or not by returning a number (usaually an 8-bit number). To indicate success, a program exits with a status of zero. If instead there was a problem, it can chose different numbers to indicate different problems. (there's no standard for what numbers mean what, it varies from program to program, but 0 always means success.)
+
+After you ran a command in the shell, the shell sets a special _environment variable_ to the value of the program's exit status. That variable's name is `?`.
+
+> To see the content of an environment variable, you can use the `echo` command. You need to prefix the variable name with a dollar sign (`$`) to make this work:
+
+``` sh
+$ ls sdfsdf
+ls: sdfsdf: No such file or directory
+$ echo $?
+1
+$
+```
+
+> After `echo` has written the content of the `?` variable, that variable's content will be lost, because `echo` has an exit status too. After `echo` ran, `$?` will contain the exit code of `echo`, which will be zero, if `echo` was successful.
+
+``` sh
+$ ls sdfsdf
+ls: sdfsdf: No such file or directory
+$ echo $?
+1
+$ echo $?
+0
+$
+```
+
+A program uses the _exit status_ to inidcate success or failure to the program it was started by.
+
+### Arguments
+
+The forth (and, for now, final) way to communicate are arguments. You've already used them a lot in the previous weeks. Whenever a program is started, a set of strings (the arguments) can be passed to alter the program's behaviour or to give it some information it needs to fullfill the desired task.
+
+In this invokation of ls
+
+``` sh
+$ ls . -l -a
+```
+
+`ls` is started with three arguments: `.`, `-l` and `-a`. Here:
+
+``` sh
+$ ls . -la
+```
+
+`ls` is started with just two arguments.
+
+> It is `ls` job to figure out that the two invocations actually mean the same.
+
+But what happend when we did `echo $?`? When you enter a command line that contains a dollar sign, the first thing `bash` does is to _replace_ the dollar sign and the variable name that follows the dollar sign, with the _contents_ of the environment variable with that name. Only _after_ this replacement, `echo` is run.
+
+> Because of this, `echo` never actually "sees" $? in its list of arguments! All it sees is "0" (or whatever the exit status of the last program might have been)
+
+Because `bash` does a simple search-and-replace operation to the whole command line before executing anyting, the use of variables is not limited to arguments. For example, try:
+
+``` sh
+$ $EDITOR
+```
+
+(If your EDITOR environment variable is set to `vim`, this will run vim)
+
+### That's all?
+
+Did we miss something? Of course. Programs can communicate with the _kernel_, the core of the operating system. The kernel has control over the machine and its various communication channels. It can use the network interfaces, (Wifi and wired network), it can use a sub-system, called _filesystem_ to read and write files from/to the harddisk or SSD and it can use the audio hardware, for example to playback or record sound. Programs can request to perform such operations and, dpending on the privilege level and on security settings, the kernel either performs them or returns an error message along the lines of "permission denied".
+
+> The mechanism used by a program to ask the kernel to perform a task is called a _system call_. A program requests some action from the _system_ (the kernel) by _calling_ a function that the kernel provides. You cannot run _system calls_ from the command line as a user. Only programs can do that. The kernel and you only communicate via third partys.
+
+This opens up many more ways of communication for a program. The most important ones being offered by the network and the file system.
+
+Programs are free to use any combination of stdio, arguments, envitonment variables and the network and file system. Here are a few examples.
+
+- `cat ~/.vimrc` - `cat` receives a single argument "~/.vimrc". It uses the argument as a file name in a system call that reads a file from disk. `cat` then writes the result of the read operation to `stdout`. If the system call returns an error, `cat` writes an error message to `stderr`. `cat` does not use `stdin` in this case.
+- `cat` - called with no arguments (or `-` as the only argument) copies everything it receives from `stdin` to `stdout`.
+- `ls $HOME` - `bash` replaces the string "$HOME" with the value of the environment variable `HOME` (which is the file path to your home directory). `bash` then runs the program `ls` and passes that path as the only argument. `ls` takes the argument and performs a _system call_ that lists the content of a directory. `ls` then turn the result of the system call into readable text and outputs that text to `stdout`
+- `curl http://www.kitchen-sessions.org/whatever.html` - `curl` takes a single argument (the URL) and splits it up into various parts: "http", "www.kitchen-session.org" and "/whatever.html". It then uses the network subsystem (through a system call) to find out the IP address of the computer called "www.kitchen-sessions.org". (it's hermes' IP address). It then uses a code library that knows how to speak `http` and tells it to download the file "/whatever.html" from that IP address. The library uses system calls to the network subsystem to communicate with the remote computer's `httpd` daemon and receive the content of "/whatever.html". `curl` then outputs that content to `stdout`. `curl` does not care about `stdin` at all.
+
+## Upside-down duck
+
+I often draw UNIX programs like this:
+
+```
+       arguments
+          o   o
+          _\_/_
+stdin >==| cat |==> stdout
+         |_____|==> stderr
+            ||
+          kernel
+
+```
+("cat" is used as an example here)
+
+This is supposed to be a box with handles or leavers or switches on top of it. There's one pipe that goes into the box, and two pipes that go out of the box at the other end. At the bottom, there is a connection to the kernel.
+
+The switches or handles or leavers at the top are the program's arguemtns. Imagine this to be a panel where you can configure how the box should behave. The pipe that goes into the box is `stdin` and the two pipes leading out of it are `stdout` and `stderr`. Imagine such a box for each UNIX program. You can connect the `stdout` (or `stderr`) of one program to the `stdin` of another (thats _piping_), or you can redirect one of those channels to come from, or go to, a file. (that's _redirecting_).  Each command might interact with the file system or network through the kernel.
+
+In the world of UNIX, most problems are solved by choosing the right boxes, connecting them in a certain fashion and finding the right combination of arguments for each one.
+
+One of you said that these diagrams look like an upside-down duck (works better when drawn on paper)
+
+## The Challenge
+
+We've used `curl` in a previous session to download a github user's public key. We've also used `cat` to output the contents of a file into `stdin` of another program.  I gave you the following challenge:
+
+> Given a file with a list of she.code members' github usernames, write a command line that output all those members' public keys to `stdout`. This command line could be used to update the `authorized_keys` file, however it should _not_ manipulate `authorized_keys` by itself. Instead the user should have _a choice_ to redirect the output of your command line into her `authorized_keys` file like this:
+
+``` sh
+$ your-command-line > ~/.ssh/authorized_keys
+```
+(where _your-command-line_ is a placeholder for the stuff you should come up with in this challenge)
+
+I told you that `cat` and `curl` will be part of the solution and that there's also a new piece that you'll need for this puzzle. It is called `xargs`. 
+
+If we draw boxes for `cat` and `curl`, they'd look like this:
+
+```
+       names
+          o   
+          _\___
+         | cat |==> stdout
+         |_____|
+            ||
+        file system
+
+```
+We use cat to output the contents of the file "names" to `stdout`. We can then pipe it to another program.
+
+```
+       URL
+          o   
+          _\____
+         | curl |==> stdout
+         |______|
+            ||
+          network
+
+```
+
+We can use `curl` to download a file from the web and output its content to `stdout`. Unfortunately though, `curl` does not receive the URL through `stdin` but via an argument (similar to `cat`), so we cannot _pipe_ the URLs into `curl`, so something like `cat names | something | curl` won't work, because _piping_ means to connect the `stdout` of some program to the `stdin` of another, and `curl` simply ignore `stdin`.
+
+> If you run `curl http://whatever.com/large_file.data` to will start downloading. If you type something into your shell while downloading, it has no effect, because `curl` ignores `stdin`.
+
+We need som kind of translator between `stdio` and arguments, a box that looks like this:
+
+```
+       arguments
+          o   
+          _\_____      
+     ===>| xargs |----o
+         |_______|___/__ 
+                | curl  |
+                |_______|
+```
+
+We need a box that reads from `stdin` and spwans another box (runs a program) and passes the information from `stdin` as arguments to the program it is spawning. It must have arguments itself, so we can configure what program it should run. And we need a way to say that it should run thae program (curl) one time for each line read from `stdin`. Furthermore, the information coming in from `stdin` is only _part_ of the argument we need to give to curl. (the username is only part of the URL).`xargs` can do all of that if we give it the right arguments.
+
+This information and the _man page_ for `xargs` where your ony resources to solve the challenge.
+
+The command line you came up with was:
+
+``` sh
+$ cat names | xargs -I USERNAME curl https://github.com/USERNAME.keys
+```
+
+It made all of us really happy to see it working! It's quite impressive that you can do this kind of crazy nerd stuff after just ten weeks!
+
+## Homework
+
+When you open a text file with `vim`, `vim` reads the content of the file into am area of the computer's memory. `vim` calls this area a _buffer_. When you then edit the text, you are not chaning the file. Instead you are changing the content of the _buffer_. Only when you do `:w` you actually _write the buffer to the file_. But if you type `:q!` the content of the buffer will be lost and _not_ written to the file. Fort the homework it is important to make a distinction between the _file_ and the _buffer_.
+
+## Your assignment
+
+The command line you came up with in today's challenge reads from a file (called "names") and outputs the public keys of github users mentioned in the file. For the homework, you should come up with a `vim` command that pipes the content of the current _buffer_ through a command line (similar to the one you came up with today) and than replaces the current buffer's content with the output of the command line.
+
+The goal is that you can open vim, type the names of your favourite she.coders (on separate lines) and then do a vim command (starting with `:`) and see the names magically being replaced with the corresponding public keys.
+
+Use the web to find out what vim command you need and use the skills you leanred today forto make adjustments to the command line.
+
+Have fun!
 
 # Session #9 2015-11-13
 
