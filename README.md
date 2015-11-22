@@ -19,15 +19,15 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 
 # Session #10 2015-11-20
 
-## More on how UNIX programs communicate
-
-### TEN!
+## TEN!
 
 Because this is our tenth session, we did something special: First we played Jeopardy (not really – we played a quiz and had the Jeopardy theme song running in the background). I was very happy with how much you remember from the previous ten weeks!
 
 In one team, We then had a retrospective where everyone wrote down on cards the things that were good, the things that were bad and the things that were ugly. The only negative thing (thus far) was that the homework assignments come too late (too close to the next session). We agreed that when they are late, we postpone checking hoemwork until one week later.
 
 I am looking forward to what you can do ten more sessions from now!
+
+## More on how UNIX programs communicate
 
 ### Standard I/O
 
@@ -178,7 +178,7 @@ We've used `curl` in a previous session to download a github user's public key. 
 > Given a file with a list of she.code members' github usernames, write a command line that output all those members' public keys to `stdout`. This command line could be used to update the `authorized_keys` file, however it should _not_ manipulate `authorized_keys` by itself. Instead the user should have _a choice_ to redirect the output of your command line into her `authorized_keys` file like this:
 
 ``` sh
-$ your-command-line > ~/.ssh/authorized_keys
+$ your-command-line > ~pair/.ssh/authorized_keys
 ```
 (where _your-command-line_ is a placeholder for the stuff you should come up with in this challenge)
 
