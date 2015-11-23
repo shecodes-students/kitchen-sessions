@@ -249,6 +249,10 @@ The goal is that you can open vim, type the names of your favourite she.coders (
 
 Use the web to find out what vim command you need and use the skills you leanred today forto make adjustments to the command line.
 
+#### Bonus
+- find a `vim` command that does the same as above, but only for the _current line_ (the line in the buffer where the cursor is)
+- if you succeeded with the above, try to assign the command to a key using the `:map` command. (You'll need to google this)
+
 Have fun!
 
 # Session #9 2015-11-13
