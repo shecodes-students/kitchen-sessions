@@ -16,6 +16,106 @@ Documenting the 2nd generation (Nicole, Kathrin, Judith, Ela)
 - [Session 8](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-8-2015-11-06)
 - [Session 9](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-9-2015-11-13)
 - [Session 10](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-10-2015-11-20)
+- [Session 11](https://github.com/shecodes-students/kitchen-sessions/blob/master/README.md#session-11-2015-11-27)
+
+# Session #11 2015-11-27
+
+## vim and piping
+
+The solution to last weeks' homework is:
+
+1. Pipe a list of usernames in vim's current buffer through a shell command that downloads the public keys of github users and replaces the content of the buffer (the names) with the keys:
+
+  ```
+  :%!xargs -I NAME curl https://github.com/NAME.keys
+  ```
+
+2. Do the same as above, but only for the line where the cursor is:
+
+  ```
+  :.!xargs -I NAME curl https://github.com/NAME.keys
+  ```
+
+3. Map the `F2` key to replace a github username with her public key:
+
+  ```
+  :map <F2> :.!xargs -I NAME curl https://github.com/NAME.keys<CR>
+  ```
+
+As you can see, the solution to 1. and 2. only differ by a single character. It is `%` in the first case and `.` in the second. This character is what vim calls the _range_. With this character you specify what lines should be used for an `ex mode` command. (The `ex mode` is the mode you are in when you see the `:` prompt near the bottom of your terminal). A dot (`.`) means "only the current line" (the line the cursor was in when you entered `:` to get into `ex mode`), `%` means _all_ lines.
+
+There are more ways to specify a range. You can simply give vim a number, then it will only use that line for the folloing command.
+
+To replace the username in line 3, you could do:
+```
+:3!xargs -I NAME curl https://github.com/NAME.keys
+```
+
+And finally, you can specify a range by giving two line numbers: where the range starts and where it ends. You separete the two line numbers with a comma:
+
+- `1,2` lines  one and two
+- `1,6` lines 1,2,3,4,5 and 6
+- `2,$` everything from line 2 (`$` means: the last line)
+
+> WHen you are in `normal mode` and press `$`, you get to the end of the current line. Inside a range in `ex mode` however, `$` stands for the last _line_. Lilli memorizes this with a sentence like this: "From 0 to $ is like the American Dream!"
+
+### Priping with `:write`
+
+During your research to solve the first homework challenge, you came across something that almost worked:
+
+```
+:w !xargs -I NAME curl https://github.com/NAME.keys
+```
+
+This download all the kyes of the github users in the buffer. so it almost looks like a solution. However, the buffer is not change. This command simply outputs the keys to the terminal, not to the buffer.
+
+`:w` is short for `:write`. The `write` command takes the contents of a buffer and writes it somewhere, usally to a file. If you do not specify a file, it saves it to the file the buffer was read from previously. This is what happens when you type `:wq`, before vim then closes the buffer and exits.
+
+If you give it a filename however, like so: `:w myfile` it will write the buffer content to the file "myfile". You can combine this with a range! `:2,5w part` would write lines 2, 3, 4 and 5 to the file "part". If you do not specify a range, `%` (all lines) is implied.
+
+But wha happens if you prefix the filename with an exclamation mark, as in `:w !cat`? It tells vim that `cat` is not a filename. Instead it is the name of a program you want to run. In this case, vim will run the program and _pipe_ the buffer conent into the program's `stdin` channel. In the case of `cat`, this results in viewing the buffer content in the terminal.
+
+> The excalmation mark (`!`) has two meanings in vim. If you postfix a command with it, like in `:q!` it means: "Do it! I know what I am doing", so you can force vim to do something it is not quite convinced of, like quitting without having written before. There is no space between the `q` and the `!`. The other use is to indicate that a _parameter_ to `:read` or `:write` is to be interpreted as a command line (program name), and not as a filename. Here you _prefix_ the _parameter_ with `!`, as in `:w !cat`. Notice: there is a space between `w` and `!`.
+
+### Priping with `:read`
+
+Instead of writing, `:r` reads the buffer from a file. Just like with `:w` you can specify an optional range. For example `:4r stuff` would insert the content of the file "stuff" after line 4. If you do not give a range, the file content will be appended after the last line.
+
+Just like with `:w`, you can use `!` to indicate that you want to run a program instead of reading from a file. In the case of `:r` however, the program _produces_ the buffer content instead of _consuming_ it. The buffer content is being _read_ from a program (or command line).
+
+For example:
+
+```
+:0r !data
+```
+
+Runs the program `date` and inserts its output (the current time and date) before the first line in the buffer. (that's actually handy)
+
+### Going full circle: filtering
+
+If you ant to _write_ the buffer to a command _and at the same time_ want to _read_ the commands output, you are going full circle. You pipe your buffer _through_ a command. Another term that is used for this is: You _filter_ your buffer through a command. That's what you did in your homework. The syntax is almost like with `:r !command` and `:w !command` (Note: `command` is a placeholder for the actual command line). But you neither specify `r` nor `w` and the range is not optional but mandatory. That's the story behind `:%!command`.
+
+And now: pad yourself on the shoulder for having mastered it!
+
+Homework:
+- map the key sequence `,data` to insert the date after the current line.
+- use `:r` and `:w` to read and write ports of the buffer from/to files
+- make a file with names, filter them through `sort` and `uniq`.
+
+## bash scripting
+
+We piped stuff through various programs. Now we tried what happens if we pipe some text through `bash` as in:
+
+```
+cat myfile|bash
+```
+
+We've seen: `bash` executes the commands in the file, just like it does when we enter themm on the keyboard! When thinking about it, this is not really a surprise. `bash` does what it always does: it reads characters from `stdin` and once it sees a newline character, it tries to make sense of the line and runs the programs mentioned in it. The only difference now is that `stdin` comes from a file and not from the terminal's keyboard.
+
+The cool thing is that we no longer need to memorize and enter a comlicated command line like `cat names|xargs -I curl ....`. Instead we can write it into a file and run it when necessary!
+
+Try to do that. And when it works: Congratulations! You just wrote your first program!
+
 
 # Session #10 2015-11-20
 
