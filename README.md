@@ -59,7 +59,7 @@ And finally, you can specify a range by giving two line numbers: where the range
 
 > WHen you are in `normal mode` and press `$`, you get to the end of the current line. Inside a range in `ex mode` however, `$` stands for the last _line_. Lilli memorizes this with a sentence like this: "From 0 to $ is like the American Dream!"
 
-### Priping with `:write`
+### Piping with `:write`
 
 During your research to solve the first homework challenge, you came across something that almost worked:
 
