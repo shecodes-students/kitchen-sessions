@@ -77,7 +77,7 @@ But wha happens if you prefix the filename with an exclamation mark, as in `:w !
 
 > The excalmation mark (`!`) has two meanings in vim. If you postfix a command with it, like in `:q!` it means: "Do it! I know what I am doing", so you can force vim to do something it is not quite convinced of, like quitting without having written before. There is no space between the `q` and the `!`. The other use is to indicate that a _parameter_ to `:read` or `:write` is to be interpreted as a command line (program name), and not as a filename. Here you _prefix_ the _parameter_ with `!`, as in `:w !cat`. Notice: there is a space between `w` and `!`.
 
-### Priping with `:read`
+### Piping with `:read`
 
 Instead of writing, `:r` reads the buffer from a file. Just like with `:w` you can specify an optional range. For example `:4r stuff` would insert the content of the file "stuff" after line 4. If you do not give a range, the file content will be appended after the last line.
 
