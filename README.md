@@ -86,7 +86,7 @@ Just like with `:w`, you can use `!` to indicate that you want to run a program 
 For example:
 
 ```
-:0r !data
+:0r !date
 ```
 
 Runs the program `date` and inserts its output (the current time and date) before the first line in the buffer. (that's actually handy)
