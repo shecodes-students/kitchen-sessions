@@ -98,7 +98,7 @@ If you ant to _write_ the buffer to a command _and at the same time_ want to _re
 And now: pad yourself on the shoulder for having mastered it!
 
 Homework:
-- map the key sequence `,data` to insert the date after the current line.
+- map the key sequence `,date` to insert the date after the current line.
 - use `:r` and `:w` to read and write ports of the buffer from/to files
 - make a file with names, filter them through `sort` and `uniq`.
 
