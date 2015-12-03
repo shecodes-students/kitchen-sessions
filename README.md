@@ -99,7 +99,7 @@ And now: pad yourself on the shoulder for having mastered it!
 
 Homework:
 - map the key sequence `,date` to insert the date after the current line.
-- use `:r` and `:w` to read and write ports of the buffer from/to files
+- use `:r` and `:w` to read and write parts of the buffer from/to files
 - make a file with names, filter them through `sort` and `uniq`.
 
 ## bash scripting
