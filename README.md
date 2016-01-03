@@ -44,7 +44,7 @@ The solution to last weeks' homework is:
 
 As you can see, the solution to 1. and 2. only differ by a single character. It is `%` in the first case and `.` in the second. This character is what vim calls the _range_. With this character you specify what lines should be used for an `ex mode` command. (The `ex mode` is the mode you are in when you see the `:` prompt near the bottom of your terminal). A dot (`.`) means "only the current line" (the line the cursor was in when you entered `:` to get into `ex mode`), `%` means _all_ lines.
 
-There are more ways to specify a range. You can simply give vim a number, then it will only use that line for the folloing command.
+There are more ways to specify a range. You can simply give vim a number, then it will only use that line for the following command.
 
 To replace the username in line 3, you could do:
 ```
@@ -1303,18 +1303,18 @@ We talked about the history of long-distance communication. Starting with smoke-
 #### Electricity
 We talked about the discovery of electricity (rubbing amber on a cat, electric fish) and electromagnetism, how "electricians" were booked by party organisers to entertain people. We talked about the battle between the Italians Volta and Galvani about the existence of _animal electricity_.
 
-We talked about how Galvani doscovered the battery by accidents by using two wires made of different metals.
+We talked about how Galvani discovered the battery by accidents by using two wires made of different metals.
 
 We talked about early experiments to use electricity for communication purposes in Europe and that Samual Morse was introduced to this idea on a journey.
 
 #### Morse
 We talked about the tragic story of the death of Morse's wife which led to the invention of the `Morse Code` and the first digital network for long-distance communication in the US.
-We talked about how electro-magnetic switches were used to relay the digital signals and that those electromagnetic switches are therefor called `relay`; together with a battery, they are the main component of a Morse relay station.
-We talked about how batteries and relays made possible the first trans-contiental telegraphy line in the US and the first transatlantic cable.
+We talked about how electro-magnetic switches were used to relay the digital signals and that those electromagnetic switches are therefore called `relay`; together with a battery, they are the main component of a Morse relay station.
+We talked about how batteries and relays made possible the first transcontinental telegraphy line in the US and the first transatlantic cable.
 
 #### Baudot
 We talked about how in 1870, French telegraph employee Émile Baudot improved upon the Morse system with a more convenient input device (5 key piano-like keyboard) which improved usability by putting less stress on the human sender because the singnal generation is done by a clock-driven device rather than the human operator herself. Baudot's decision to use impulses of just one length (as opposed to morse) turned out to have a huge impact, because it is the key to automation.
-We talked about the 5-bit Baudot code and how its design was influenced by ergnomic concerns. The clock speed in a Baudaut system is called `baud rate` and is equivalent to `bits per seconds` (`bps` for short). Until the 90s modem speed was meassured in baud (e.g. "I have a 2400 baud modem').
+We talked about the 5-bit Baudot code and how its design was influenced by ergonomic concerns. The clock speed in a Baudot system is called `baud rate` and is equivalent to `bits per seconds` (`bps` for short). Until the 90s modem speed was meassured in baud (e.g. "I have a 2400 baud modem').
 
 We talked about parameters (baud rate, start bit, stop bit) that needed to be known to the sender and receiver prior to transmission in order for the system to work.
 
@@ -1339,17 +1339,17 @@ We talked about how Telegraphy company became wealthy and powerful and the techn
 - [Western union commercial](https://youtu.be/4ziHpB-Dw7o)
 
 #### ASCII
-We talked about how different companies and vendors extended the Baudot code (to get rid of figure mode/letter mode?) to 7-bit code. They all did it in different ways, which hurt inter-operatability. To solve this issue, ASCII was introduced. (We found out that is happend in the 60s, so the cain of events probably was a bit different than presented here.)
-We talked about how ASCII's design could be free of ergonomic concearns, because of a better de-coupling between the human and the mechanics of signal-generation. Instead it is neatly organised into sections (lower-case letters, upper-case letters, numbers, control-codes)
+We talked about how different companies and vendors extended the Baudot code (to get rid of figure mode/letter mode?) to 7-bit code. They all did it in different ways, which hurt inter-operatability. To solve this issue, ASCII was introduced. (We found out that this happenend in the 60s, so the chain of events probably was a bit different than presented here.)
+We talked about how ASCII's design could be free of ergonomic concerns, because of a better de-coupling between the human and the mechanics of signal-generation. Instead it is neatly organised into sections (lower-case letters, upper-case letters, numbers, control-codes)
 You can identify the section by the first couple of bits and the rest of the bits tell you the number of the symbol within that section (1 for A etc). This makes it possible to read ASCII without having to memorize the entire code table (as opposed to Morse/Baudot)
 
 - [Tom Scott Video: How to read binary ASCII](https://youtu.be/wCQSIub_g7M)
 
 #### Proprietary extensions to ASCII
-We talked about how the 7-bit ASCII code was extended with an eighth bit to make room for German Umlauts, French accents, the Copyright symbol etc., and how, again, each vendor introduced their _own_ code. We all remember the messed up Umlauts in emails sent from a Windows computer to a Mac. Lots of  different 8-Bit encodings co-existed. They had names like `latin-1`, `mac-roman`, `iso-whatever`.
+We talked about how the 7-bit ASCII code was extended with an eighth bit to make room for German Umlauts, French accents, the Copyright symbol etc., and how, again, each vendor introduced their _own_ code. We all remember the messed up Umlauts in emails sent from a Windows computer to a Mac. Lots of different 8-Bit encodings co-existed. They had names like `latin-1`, `mac-roman`, `iso-whatever`.
 
 #### Unicode
-We discussed how `Unicode` tries to solves this issue _once and for all_ by simply assigning a number to each character, glyph and symbol any human ever came up with. (many tens of thousands, including musical notes, emojis, dead languages). Unicode explicity _avoids_ to specify a number of bits to transfer those numbers. The problem of creating bit patterns for each `codepoint` (symbol number) is left to other standards.
+We discussed how `Unicode` tries to solve this issue _once and for all_ by simply assigning a number to each character, glyph and symbol any human ever came up with. (many tens of thousands, including musical notes, emojis, dead languages). Unicode explicity _avoids_ to specify a number of bits to transfer those numbers. The problem of creating bit patterns for each `codepoint` (symbol number) is left to other standards.
 We talked about how Microsoft uses a 16 bit code (sort of learning nothing from history) while UTF-8 is an elegant solutions that, by using 8 bit as default, minimises the amount of data for English text and expands the number of bits per character as needed.
 
 - [Tom Scott's UTF8-Video](https://youtu.be/MijmeoH9LT4)
@@ -1362,7 +1362,7 @@ We talked about how Charles Babbage tried to build a machine that does simple ca
 - [Great Minds – Ada Lovelace](https://youtu.be/uBbVbqRvqTM)
 
 #### Konrad Zuse
-Konrad Zuse worked at an airplane company. He had to calculate the most efficient shapes for wings. Tired of this work, he started to build a machine that would do this for him. This happened in his parent's living room in Berlin. Konrad used mechanical switches in his first version and Relays (electromagnetic switches) in the later versions. The 3rd version (Z3) he built during World War II was the first working computer.
+Konrad Zuse worked at an airplane company. He had to calculate the most efficient shapes for wings. Tired of this work, he started to build a machine that would do this for him. This happened in his parent's living room in Berlin. Konrad used mechanical switches in his first version and relays (electromagnetic switches) in the later versions. The 3rd version (Z3) he built during World War II was the first working computer.
 
 - [Die Zuse Story (German)](https://youtu.be/TUPj-Aep9PI)
 
@@ -1389,7 +1389,7 @@ We talked about how Graham Bell invented the telephone, using money that was sup
 
 #### Invention of the Transistor
 AT&T had a famous research and development department: Bell Labs (named after Graham Bell). At Bell Labs a huge number of important inventions were made and for decades many of the nobel prizes went to employees of Bell Labs. Among this inventions: laser, radar, transistor, UNIX.
-We talked about how a transistor is built from metal and Silicon, a semi-conductor, and can replace relays and tubes at a much lower cost and much higher lifespan. It also switches a lot faster and consumes less energy.
+We talked about how a transistor is built from metal and silicon, a semi-conductor, and can replace relays and tubes at a much lower cost and much higher lifespan. It also switches a lot faster and consumes less energy.
 
 - [How does a Transistor Work?](https://youtu.be/IcrBqCFLHIY)
 
@@ -1399,7 +1399,7 @@ We briefly talked about how a novel photographic process lead to entire electric
 - [historic film: Fairchild Semiconductor, inventor of the IC](https://www.youtube.com/watch?v=z47Gv2cdFtA)
 
 #### Time Sharing
-We talked about that the first computers were so bug and expensive that universities or companies could only afford one of them (if at all). We talked about how users had to wait a long time before the computer would run their programs. Cpmputing time was the limiting factor. Usually, depending on how important you were, you could hope that your program would maybe run sometime during the night and you would pick up the printed result (usually an error message) the next day. The idea of time sharing is to divide the computer's time into very short time slices and run a different user's program in each of those slices. By connecting multiple terminals to the same computer, users could work interactively and at the same time with one computer.
+We talked about that the first computers were so buggy and expensive that universities or companies could only afford one of them (if at all). We talked about how users had to wait a long time before the computer would run their programs. Computing time was the limiting factor. Usually, depending on how important you were, you could hope that your program would maybe run sometime during the night and you would pick up the printed result (usually an error message) the next day. The idea of time sharing is to divide the computer's time into very short time slices and run a different user's program in each of those slices. By connecting multiple terminals to the same computer, users could work interactively and at the same time with one computer.
 
 - [Time Sharing at MIT, historic film](https://youtu.be/Q07PhW5sCEk)
 
@@ -1412,6 +1412,6 @@ We talked about how Dennis Ritchie and Ken Thompson worked on a time-sharing sys
 - [Brian Kernighan about working at Bell Labs](https://youtu.be/QFK6RG47bww)
 
 #### Video Terminals
- Cathode Ray Tubes (CRT) are being used as screens for TVs and for a new generation of "Glass" terminals or _video terminals_. The VT100 became a popular model in the the 70s. These video terminals almost look like personal computers, but they remain as "dumb" as the earlier models that look like mechanical typewriters (teletype, or TTY for short). The print everything they receive on a serial input line (basically the system that baudot invented) and, if you press a key, they send it over a serial output line. You can connect two of these terminals together to have a simple chat system, or you can connect them to a computer to feed keystrokes as input into a program and visualise the program's output.
+ Cathode Ray Tubes (CRT) are being used as screens for TVs and for a new generation of "Glass" terminals or _video terminals_. The VT100 became a popular model in the the 70s. These video terminals almost look like personal computers, but they remain as "dumb" as the earlier models that look like mechanical typewriters (teletype, or TTY for short). They print everything they receive on a serial input line (basically the system that baudot invented) and, if you press a key, they send it over a serial output line. You can connect two of these terminals together to have a simple chat system, or you can connect them to a computer to feed keystrokes as input into a program and visualise the program's output.
 
 - [The Unix revolution – computing in the 70s](https://youtu.be/-rPPqm44xLs)
