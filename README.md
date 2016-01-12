@@ -962,10 +962,10 @@ We also realized that the base64 table is actually pretty easy to remember:
 
 We revisted Diffie-Hellman key exchange and the properties of public key cryptography. It allows you to
 - encrypt a message that only the intended recipient can decrypt (use the recipient's public key)
-- digitally sign a message you have written and make sure it is not modfied by a man-in-the-middle. (encode with your own private key)
+- digitally sign a message you have written and make sure it is not modified by a man-in-the-middle. (encode with your own private key)
 - combine encryption with a digital signature
 
-We discussed that encryption and authentication is especiialy important when remotely logging into a computer via the Internet.
+We discussed that encryption and authentication is especially important when remotely logging into a computer via the Internet.
 
 ## SSH
 
@@ -1032,11 +1032,11 @@ As a guest, you join (attach) to a tmux session like this:
 ``` sh
 $ tmux -S /tmp/pair attach
 ```
-(you typically find this command line in the command history of the `pair` user, so after `ssh`ing into the host computer, you simply press the `up arrow` key, and there it is!
+(you typically find this command line in the command history of the `pair` user, so after `ssh`ing into the host computer, you simply press the `up arrow` key, and there it is!)
 
-In a shared tmux session, all participants can type on their keyboard and the keystrokes are handled as if the host typed them. We all become one user (typically we use the user account of the person that hosts) and everyone sees the same terminal output, however in their own favorite font and colors, because your terminal emulator still rules over these aspects. To make this work, the shared area is as big as the smallest terminal in the session. All other terminals are artificcially made smaller by filling some area with dots.
+In a shared tmux session, all participants can type on their keyboard and the keystrokes are handled as if the host typed them. We all become one user (typically we use the user account of the person that hosts) and everyone sees the same terminal output, however in their own favorite font and colors, because your terminal emulator still rules over these aspects. To make this work, the shared area is as big as the smallest terminal in the session. All other terminals are artificially made smaler by filling some area with dots.
 
-We discussed that this form of pair programming is superior to screen sharing (transfering a compressed image of the computer desktop over the network) in low-bandwidth situations or when the host computer has no graphical user interface (GUI), like a server for example. It also is more inclusive; even people that use a [Braille display](https://en.wikipedia.org/wiki/Refreshable_braille_display) can participate. If you are developing an application with a GUI however, it becomes harder to have a shared view of your work's result.
+We discussed that this form of pair programming is superior to screen sharing (transfering a compressed image of the computer desktop over the network) in low-bandwidth situations or when the host computer has no graphical user interface (GUI), like a server for example. It also is more inclusive; even people that use a [Braille display](https://en.wikipedia.org/wiki/Refreshable_braille_display) can participate. If you are developing an application with a GUI however, it becomes harder to have a shared view of your work result.
 
 We briefly experimented with opening `panels` (terminals in terminals) inside tmux and navigating between panels. Expect more `tmux` wizardry later.
 
@@ -1047,13 +1047,13 @@ I gave you a more detailed history of UNIX and we talked about some influencial 
 Here's the timeline we went through:
 
 - 1957-10-04 Launch of Sputnik 1 (first satellite) causes _Sputnik crisis_ in the US
-- 1958-02 Eisenhower authorises creation of _DARPA_ as a response to the launch of Sputnik 1, 13 employees manage an initial budget of $520 Mio (2.92 billion as of 2015)
+- 1958-02 Eisenhower authorises creation of _ARPA_ (later DARPA) as a response to the launch of Sputnik 1, 13 employees manage an initial budget of $520 Mio (2.92 billion as of 2015)
 - 1958-06 _NASA_ act signed
-- 1964 _Gneral Electric (GE)_, _Bell Labs_ and _MIT_ collaborate on _Multics_, a time-sharing operating system (OS) for a GE mainframe, MIT's MAC project is sponsored by DARPA since '63 with $2 Mio
-- 1968 After visiting MIT and realising that keeping a phone line open is one of the major cost factrors, Donald Davies develops the concept of _packet switching_ and presents it in Edinburgh
+- 1964 _Gneral Electric (GE)_, _Bell Labs_ and _MIT_ collaborate on _Multics_, a time-sharing operating system (OS) for a GE mainframe, MIT's MAC project is sponsored by ARPA (resp. DARPA) since '63 with $2 Mio
+- 1968 After visiting MIT and realising that keeping a phone line open is one of the major cost factors, Donald Davies develops the concept of _packet switching_ and presents it in Edinburgh
 1969 Davies publication and the fact that Bob Tylor needed to use three different terminals in his Pentagon office to remote-control three ARPA-sponsored computers across the nation, inspire ARPANET
 - 1969 Unhappy with Multics, MIT AI staff (including Richard M. Stallman) start work on their own OS: _ITS_ ("the incompatible time sharing system", a name that expresses frustration), a completely open (as in: no security), wiki-like, post-privacy OS.
-- 1969 Bell Labs leaves multics consortium because they consider it to be too comprex, complicated and unelegant
+- 1969 Bell Labs leaves multics consortium because they consider it to be too complex, complicated and unelegant
     - **Ken Thompson** (26) and **Dennis Ritchie** (28) start work on _Unics_ (pun: eunuchs) on a PDP-7 as a platform for their game "Space Travel".
     - Thompson creates the system programming language _B_ to support multiple target architectures
     - Thompson and Ritchie create _ed_, a modal editor with almost no feedback (as approriate for ASSR 33 TTYs)
@@ -1069,26 +1069,26 @@ Here's the timeline we went through:
 - 1976 Students at Berkeley start improving AT&T Unix and call it **BSD** (Berkeley Software Distribution), **Bill Joy** leads these efforts.
 - 1977 Release of Version 7 UNIX (bourne shell replaces thompson shell)
 - 1978 1BSD (an add-on to Unix 6) was sent to ~30 recipient.
-- 1978 Conway teaches VLSI (very large scale integration, i.e. computer-aided chip design) at MIT
+- 1978 Cornway teaches VLSI (very large scale integration, i.e. computer-aided chip design) at MIT
 - 1979 MIT AI Lab dissolves, (founding of Symbolics and LMI), leaving Stallman without the community of **Hackers** (they invented the term; it means: programmers (that hack on keyboards), later the media incorrectly used the word to mean "people that commit cypercrime")
 - 1979-05 2BSD contains csh and **vi** (both written by Joy) and Berknet, developed by Eric Schmidt as part of his master's thesis work. 2BSD was maintained until 2008
 - 1979-09 3BSD contains the Unix port to VAX and a re-written kernel with virtual memory managment called _vmunix_
-- 198x Lynn Cornway joins DARPA (from XEROX PARC)
-    - DARPA's VLSI Project (founded by Lynn Cornway) funds further development of BSD and Stanford University Network (S.U.N. Workstation) to make it easier to design complex CPUs > 1k transistors. The basic idea is: separate design of logic circuits from the nitty-gritty details of physics, ley computers calculate the circuit layout, this requires software and hardware)
-- 1980 Joy re-implements **TCP/IP** instead of integrating DARPA-sponsored BBN version
+- 198x Lynn Cornway joins ARPA (from XEROX PARC)
+    - ARPA's VLSI Project (founded by Lynn Cornway) funds further development of BSD and Stanford University Network (S.U.N. Workstation) to make it easier to design complex CPUs > 1k transistors. The basic idea is: separate design of logic circuits from the nitty-gritty details of physics, ley computers calculate the circuit layout, this requires software and hardware)
+- 1980 Joy re-implements **TCP/IP** instead of integrating ARPA-sponsored BBN version
 - 1981 _MOSIS_ service launched as one of the first services on the ARPANET (aka the Internet). Allows students to upload their chip-designs via FTP and they receive the finished chip by mail. This is the implementation of a VLSI system.
-- 1981 Berkeley students publish their _RISC1_ design (DARPA VLSI funded, they uses MOSIS)
+- 1981 Berkeley students publish their _RISC1_ design (ARPA VLSI funded, they uses MOSIS)
 - 1982 Joy and Stanford students found _SUN Microsystems_
-- 1984 After splitting up AT&T's local telephone businesses and therefor freed from antitrrust regulations, they start to sell Unix as a commercial product ($16k for administrative use by universities and $800 for education with an addition per-CPU fee)
+- 1984 After splitting up AT&T's local telephone businesses and therefore freed from antitrust regulations, they start to sell Unix as a commercial product ($16k for administrative use by universities and $800 for education with an addition per-CPU fee)
 - 1983-09 **Richard Stallman** launches the **GNU project** and starts working on gnu emacs, **gcc**
 - 1985-10 Stallman founds the **Free Software Foundation** (FSF)
-    - FSF funds development of **bash** and many ohter userland tools
+    - FSF funds development of **bash** and many other userland tools
 - 1989 Release of BSD "Net/1" (TCP/Stack only under a free license for non-AT&T licencees)
 - 1988 First release of NextStep, an OS based on BSD
 - 1990 Using NextStep, **Tim Berners-Lee** writes the first web browser. It's name: _WorldWideWeb_
 - 1991 Release of BSD "Net/2", whole OS with AT&T code (almost) replaced
 - 1991 **Linus Torvalds** releases first version of **Linux**, a kernel to be combined with a GNU userland
-- 1992 Lawsuit AT&T vs BSDi, uncertainty of legal status of BSD, boosts GNU/Linux popularty
+- 1992 Lawsuit AT&T vs BSDi, uncertainty of legal status of BSD, boosts GNU/Linux popularity
 - 1992 Thompson co-invents **UTF-8** (backward-compatibleish replacement for ASCII)
 - 1993 **FreeBSD** project release of a PC port of BSD
 - 1994 FreeBSD 2.0 is free of any AT&T code
@@ -1116,9 +1116,9 @@ In this fun and popular section of each kitchen session, we talked about simple 
 
 ## Revisiting positional notation
 
-I gave you the task of converting a largish decimal number (1052) to binary (base2), octal (base8), hexadecimal (base16) and base64. We found out: the higher the base, the shorter the resulting notation. Therefore, to transfer a string of bits over a transmission line that can only transport 7-bit ASCII (telegraphy) the most space-efficient encoding is base64. It uses (nearly) all of the printibale characters in the ASCII code table.
+I gave you the task of converting a largish decimal number (1052) to binary (base2), octal (base8), hexadecimal (base16) and base64. We found out: the higher the base, the shorter the resulting notation. Therefore, to transfer a string of bits over a transmission line that can only transport 7-bit ASCII (telegraphy) the most space-efficient encoding is base64. It uses (nearly) all of the printable characters in the ASCII code table.
 
-We also found out about a neat relationship between binary and octal, binary and hex and binary and base64
+We also found out about a near relationship between binary and octal, binary and hex and binary and base64
 
 - there are 8 ways to combine three bits -> three bits can be represented by one octal digit
 - there are 16 ways to combine four bits -> four bits can be represented by one hex digit
@@ -1130,7 +1130,7 @@ We found another relationship:
 
 - there are 64 ways to combine two octal digits -> two octal digits can be represented by one base64 digit
 
-We used these obervations to quickly convert a long binary number to hex, octal or base64 by grouping the bits into groups of 3, 4 or 6 repspectively. You can then convert the groups separately, which is much simpler than dealing with the whole thing at once.
+We used these observations to quickly convert a long binary number to hex, octal or base64 by grouping the bits into groups of 3, 4 or 6 respectively. You can then convert the groups separately, which is much simpler than dealing with the whole thing at once.
 
 ### Homework:
 
@@ -1147,7 +1147,7 @@ As you will see: numbers like 2, 4, 8, 16, 32, 64, 128 will occur all over the p
 
 ## A Message From The Others
 
-I presented you an encoded message from another she.codes team and we discussed possible encodings. First we talked about the base they might have used for number notation (tunred out to be hex) then we talked about the meaning of those numbers. It turned out that the message is an 8-bit-wide bitmap (or raster image) where each 1 represents a dark pixel and each zero represents a transparent pixel. After successful decoding, you prepared a message for another team (maybe using a different encoding ... we won't discolse it here)
+I presented you an encoded message from another she.codes team and we discussed possible encodings. First we talked about the base they might have used for number notation (turned out to be hex) then we talked about the meaning of those numbers. It turned out that the message is an 8-bit-wide bitmap (or raster image) where each 1 represents a dark pixel and each zero represents a transparent pixel. After successful decoding, you prepared a message for another team (maybe using a different encoding ... we won't disclose it here)
 
 ### Homework
 - think about how you could make an image file that uses more colors than just two.
@@ -1166,9 +1166,9 @@ We briefly talked about symmetric and asymmetric cryptography. In symmetric cryp
 
 > In cryptography, a **cipher** (or cypher) is an algorithm for performing encryption or decryption -— a series of well-defined steps that can be followed as a procedure.
 
-We talked about taht symmetric ciphers only work after the secret key has been transferred between sender and receiver, whcih in turn requires a secure communication channel. Historically, this is solved by the two parties meeting in person to exhcnage the key.
+We talked about that symmetric ciphers only work after the secret key has been transferred between sender and receiver, which in turn requires a secure communication channel. Historically, this is solved by the two parties meeting in person to exchange the key.
 
-We discussed that it would be much more practical if tehre was a way to securely exchange a secret over an unsecure channel.
+We discussed that it would be much more practical if there was a way to securely exchange a secret over an unsecure channel.
 
 ### Homework
   - watch [this video](https://www.youtube.com/watch?v=3QnD2c4Xovk) on Diffie-Hellman Key Exchange.
