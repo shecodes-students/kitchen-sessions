@@ -1182,11 +1182,11 @@ We talked about how it is much easier to convert between binary and octal, or bi
 
 ## base60 and base64
 We also talked about base 60 (used in clocks, like 1:43:32, meaning one hour, 43 minutes, 32 seconds. This is a base60 system where each symbol consists of two decimal digits. This is totally sick if you think about it. Certainly more complex than anything you find in the tidy world of programming!
-There's a much less familiar one: base64, the biggest number system we can do using only visible characters from the ASCII table. It is the most compact way to transfer a very large sets of bits over a traditional 7bit telegraphy line.
+There's a much less familiar one: base64, the biggest number system we can do using only visible characters from the ASCII table. It is the most compact way to transfer very large sets of bits over a traditional 7bit telegraphy line.
 
 We talked about how this could be used for a telegraphy-age telefax, a thing that actually did exist! We talked about the _stack of encodings_ that is necessary to make this work:
 - Pixels are encoded as ones and zeros
-- six of them are grouped an their binary value is used to map them to a character in the set of characters used by base64 (2^6 = 64)
+- six of them are grouped and their binary value is used to map them to a character in the set of characters used by base64 (2^6 = 64)
 - these characters (all printable ASCII characters) can now be sent over a traditional telegraph wire, just like any other telegram.
 - the receiver does the above steps on reverse.
 
@@ -1195,7 +1195,7 @@ This is a very common pattern you find everywhere in computing: different layers
 ## A Closer look at the Keyboard
 On a terminal most keypresses result in a 7-bit binary number (the character's ASCII code) to be sent over the serial output line. However, there are some keys that are meant to be pressed only in combination with another key. They change that other key's effect by making accessible a 2nd or even 3rd key assignment. Those keys are called _meta-keys_. On the original terminals there were two meta-keys: Shift and Control.
 
-On modern computers there are some additional meta-keye:, Option (Apple) or Alt (other brands, alt stands for Alternative), Command (Apple), Alt-Gr (other brands, "Gr" stands for graphics) and on some Laptops: Fn (short for "Function"). On modern computers the effect of a meta-key combinations is defined by the operating system and/or the application that owns the active window. 
+On modern computers there are some additional meta-keys: Option (Apple) or Alt (other brands, alt stands for Alternative), Command (Apple), Alt-Gr (other brands, "Gr" stands for graphics) and on some Laptops: Fn (short for "Function"). On modern computers the effect of a meta-key combinations is defined by the operating system and/or the application that owns the active window. 
 
 ## Control Codes defined by ASCII
 When the Control-key is pressed in combination with a letter (for example Control-A) on a terminal (or with the window of the terminal emulator being the active window) then a well-defined 7-bit value is sent. For Control-A, thats a 1, for Control-B it's a 2 and so forth all the way to 31. All of these _control codes_ or _control characters_ have a special meaning that is defined by the ASCII standard: 13 (Control-M) for example is Carriage Return (CR), that's the same as pressing the Enter key. Control-J (10) is Line Feed (LF), Bell (7) is Control-G and makes the receiving end beep! The `escape` character is Control-[.
@@ -1220,19 +1220,19 @@ Originally the other end of the terminal, the thing you "chat" with, was a progr
 
 We talked about the three components of a UNIX system. The _kernel_ is the overlord of the system, it makes sure that users that use the computer at the same time (_concurrently_) are protected from each other and also that programs that run concurrently cannot overwrite each other's data. Furthermore it makes sure that the time-sharing slices are shared in a fair manner. (whatever "fair" means).
 
-The shell is your interface to the machine. It let's you start programs and combine them, building complex data flows through multiple programs and more. You cannot interact with the kernel directly. Put programs can. The kernel might however disallow certain programs from doing certain things, depending on their privilege level. (more on this later)
+The shell is your interface to the machine. It let's you start programs and combine them, building complex data flows through multiple programs and more. You cannot interact with the kernel directly. But programs can. The kernel might however disallow certain programs from doing certain things, depending on their privilege level. (more on this later)
 
 The _userland_ is where those programs live. It's also where the shell lives, because the shell simply is a program like all the others, it's just the one that happens to be in charge of the terminal input/output connections. Consequently the sum of all those little programs (like `ls`, `pwd`, `cd`) is called the userland.
 
 ## UNIX family tree
-We talked about the evolution of Unix. A joint-venutre of Bell Labs, MIT and General Electric started developing  Multics. DARPA (Defense Advanced Research Projects Agency) wanted an operating system with time-sharing (`mult` as in multi-user, multi-program). Bell Labs left the consortium after it became obvious that Mutics would become too complex. Dennis Ritchie and Ken Thompson, both working at Bell Labs were so much in love with the basic ideas (the _UNIX philosophy_) that they started a new, much simpler project with the same basic ideas. They called it "Unics" (uni as in the opposite of multi). The University of Berkeley made their own distribution (the first one infringing on AT&T's copyright). They called it BSD (Berkeley Software Distribution). BSD received DAROA funding. For the next release, they re-coded all the stuff that wes property of AT&T (the employer of Ritchie and Thompson) and the University's lawyers wrote up the BSD license (it basically says: do what you want, we take no responsibilities. It allows commercial use, modification, redistribution and everything else you can think of). Since then, UNIX is free. FreeBSD, OpenBSD, NetBSD, PCBSD are all descendants of this distro (short for distribution). Darwin is another one, combined with their own kernel, this is the foundation of Mac OS X and iOS.
+We talked about the evolution of Unix. A joint-venture of Bell Labs, MIT and General Electric started developing  Multics. DARPA (Defense Advanced Research Projects Agency) wanted an operating system with time-sharing (`mult` as in multi-user, multi-program). Bell Labs left the consortium after it became obvious that Mutics would become too complex. Dennis Ritchie and Ken Thompson, both working at Bell Labs were so much in love with the basic ideas (the _UNIX philosophy_) that they started a new, much simpler project with the same basic ideas. They called it "Unics" (uni as in the opposite of multi). The University of Berkeley made their own distribution (the first one infringing on AT&T's copyright). They called it BSD (Berkeley Software Distribution). BSD received DAROA funding. For the next release, they re-coded all the stuff that was property of AT&T (the employer of Ritchie and Thompson) and the University's lawyers wrote up the BSD license (it basically says: do what you want, we take no responsibilities. It allows commercial use, modification, redistribution and everything else you can think of). Since then, UNIX is free. FreeBSD, OpenBSD, NetBSD, PCBSD are all descendants of this distro (short for distribution). Darwin is another one, combined with their own kernel, this is the foundation of Mac OS X and iOS.
 
-A former emplyee at MIT's AI Lab, Richard Stallman founded the Free Sftware Foundation (FSF). He started to re-implement UNIX' shell and userland tools and was soon joined by many other programmers. That's what he calls the free software movment. The project's name is GNU (stands for "GNU's Not Unix"). Together with a kernel for IBM compatible PCs written by Linus Torvalds, this is the operating system known as "Linux". (However it _should_ be known as "GNU/Linux" because Linux is really just the kernel)
+A former employee at MIT's AI Lab, Richard Stallman, founded the Free Software Foundation (FSF). He started to re-implement UNIX' shell and userland tools and was soon joined by many other programmers. That's what he calls the free software movement. The project's name is GNU (stands for "GNU's Not Unix"). Together with a kernel for IBM compatible PCs written by Linus Torvalds, this is the operating system known as "Linux". (However it _should_ be known as "GNU/Linux" because Linux is really just the kernel.)
 
 So, all the operating systems are closely related, they all are Unix, or _unix-like_. The one exception being: everything from Microsoft. Windows is a descendant of DR-DOS by Digital Research which in turn is related to CP/M.
 
 ## foo, bar, baz
-We talked about where the word `foo` comes from (a comic from the 30s) and what it means (nothing, it's nonsense). We also talked about the US military term FUBAR (fucked up beyond all repair). These two things seem to have interacted in people's head and lead to `foo` and `bar` being used very frequently as placeholders for words. Sort of like `lorem ipsum` but for single words rather than a whole body of text.
+We talked about where the word `foo` comes from (a comic from the 30s) and what it means (nothing, it's nonsense). We also talked about the US military term FUBAR (fucked up beyond all repair). These two things seems to have interacted in people's head and lead to `foo` and `bar` being used very frequently as placeholders for words. Sort of like `lorem ipsum` but for single words rather than a whole body of text.
 
 ## file paths
 We talked about relative and absolute paths. You recognise an absolute path by a leading slash (`/`) or tilde (`~`), where tilde is short for "my home directory" and slash stands for the _root_ of the file system (the uppermost directory level). The root has no name, it just has a symbol (`/`).
@@ -1255,7 +1255,7 @@ A few examples
 Even though the shell (bash) has no clue what the arguments are, it sort of guesses that they are paths and therefor helps you creating those paths. (Most of the time it is correct, many arguments are actually paths). It helps you by completing path segments when you press the tab key or by displaying a list of all possibilities when you double-tap the tab key.
 
 ## de-facto argument grammar
-Event though each program can decide how it wants to interpret the characters passed in as arguments, there's a convention:
+Event though each program can decide how it wants to interpret the characters passed on as arguments, there's a convention:
 
 - argument staring with two dashes (`--`) are the long form of a switch
 	- `ls --all --list`
