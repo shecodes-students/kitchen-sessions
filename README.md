@@ -51,13 +51,13 @@ To replace the username in line 3, you could do:
 :3!xargs -I NAME curl https://github.com/NAME.keys
 ```
 
-And finally, you can specify a range by giving two line numbers: where the range starts and where it ends. You separete the two line numbers with a comma:
+And finally, you can specify a range by giving two line numbers: where the range starts and where it ends. You separate the two line numbers with a comma:
 
 - `1,2` lines  one and two
 - `1,6` lines 1,2,3,4,5 and 6
 - `2,$` everything from line 2 (`$` means: the last line)
 
-> WHen you are in `normal mode` and press `$`, you get to the end of the current line. Inside a range in `ex mode` however, `$` stands for the last _line_. Lilli memorizes this with a sentence like this: "From 0 to $ is like the American Dream!"
+> When you are in `normal mode` and press `$`, you get to the end of the current line. Inside a range in `ex mode` however, `$` stands for the last _line_. Lilli memorizes this with a sentence like this: "From 0 to $ is like the American Dream!"
 
 ### Piping with `:write`
 
@@ -67,15 +67,15 @@ During your research to solve the first homework challenge, you came across some
 :w !xargs -I NAME curl https://github.com/NAME.keys
 ```
 
-This download all the kyes of the github users in the buffer. so it almost looks like a solution. However, the buffer is not change. This command simply outputs the keys to the terminal, not to the buffer.
+This downloads all the keys of the github users in the buffer. so it almost looks like a solution. However, the buffer is not changed. This command simply outputs the keys to the terminal, not to the buffer.
 
-`:w` is short for `:write`. The `write` command takes the contents of a buffer and writes it somewhere, usally to a file. If you do not specify a file, it saves it to the file the buffer was read from previously. This is what happens when you type `:wq`, before vim then closes the buffer and exits.
+`:w` is short for `:write`. The `write` command takes the content of a buffer and writes it somewhere, usally to a file. If you do not specify a file, it saves it to the file the buffer was read from previously. This is what happens when you type `:wq`, before vim then closes the buffer and exits.
 
 If you give it a filename however, like so: `:w myfile` it will write the buffer content to the file "myfile". You can combine this with a range! `:2,5w part` would write lines 2, 3, 4 and 5 to the file "part". If you do not specify a range, `%` (all lines) is implied.
 
-But wha happens if you prefix the filename with an exclamation mark, as in `:w !cat`? It tells vim that `cat` is not a filename. Instead it is the name of a program you want to run. In this case, vim will run the program and _pipe_ the buffer conent into the program's `stdin` channel. In the case of `cat`, this results in viewing the buffer content in the terminal.
+But what happens if you prefix the filename with an exclamation mark, as in `:w !cat`? It tells vim that `cat` is not a filename. Instead it is the name of a program you want to run. In this case, vim will run the program and _pipe_ the buffer content into the program's `stdin` channel. In the case of `cat`, this results in viewing the buffer content in the terminal.
 
-> The excalmation mark (`!`) has two meanings in vim. If you postfix a command with it, like in `:q!` it means: "Do it! I know what I am doing", so you can force vim to do something it is not quite convinced of, like quitting without having written before. There is no space between the `q` and the `!`. The other use is to indicate that a _parameter_ to `:read` or `:write` is to be interpreted as a command line (program name), and not as a filename. Here you _prefix_ the _parameter_ with `!`, as in `:w !cat`. Notice: there is a space between `w` and `!`.
+> The exclamation mark (`!`) has two meanings in vim. If you postfix a command with it, like in `:q!` it means: "Do it! I know what I am doing", so you can force vim to do something it is not quite convinced of, like quitting without having written before. There is no space between the `q` and the `!`. The other use is to indicate that a _parameter_ to `:read` or `:write` is to be interpreted as a command line (program name), and not as a filename. Here you _prefix_ the _parameter_ with `!`, as in `:w !cat`. Notice: there is a space between `w` and `!`.
 
 ### Piping with `:read`
 
@@ -110,9 +110,9 @@ We piped stuff through various programs. Now we tried what happens if we pipe so
 cat myfile|bash
 ```
 
-We've seen: `bash` executes the commands in the file, just like it does when we enter themm on the keyboard! When thinking about it, this is not really a surprise. `bash` does what it always does: it reads characters from `stdin` and once it sees a newline character, it tries to make sense of the line and runs the programs mentioned in it. The only difference now is that `stdin` comes from a file and not from the terminal's keyboard.
+We've seen: `bash` executes the commands in the file, just like it does when we enter them on the keyboard! When thinking about it, this is not really a surprise. `bash` does what it always does: it reads characters from `stdin` and once it sees a newline character, it tries to make sense of the line and runs the programs mentioned in it. The only difference now is that `stdin` comes from a file and not from the terminal's keyboard.
 
-The cool thing is that we no longer need to memorize and enter a comlicated command line like `cat names|xargs -I curl ....`. Instead we can write it into a file and run it when necessary!
+The cool thing is that we no longer need to memorize and enter a complicated command line like `cat names|xargs -I curl ....`. Instead we can write it into a file and run it when necessary!
 
 Try to do that. And when it works: Congratulations! You just wrote your first program!
 
