@@ -1232,7 +1232,7 @@ A former employee at MIT's AI Lab, Richard Stallman, founded the Free Software F
 So, all the operating systems are closely related, they all are Unix, or _unix-like_. The one exception being: everything from Microsoft. Windows is a descendant of DR-DOS by Digital Research which in turn is related to CP/M.
 
 ## foo, bar, baz
-We talked about where the word `foo` comes from (a comic from the 30s) and what it means (nothing, it's nonsense). We also talked about the US military term FUBAR (fucked up beyond all repair). These two things seems to have interacted in people's head and lead to `foo` and `bar` being used very frequently as placeholders for words. Sort of like `lorem ipsum` but for single words rather than a whole body of text.
+We talked about where the word `foo` comes from (a comic from the 30s) and what it means (nothing, it's nonsense). We also talked about the US military term FUBAR (fucked up beyond all repair). These two things seem to have interacted in people's head and lead to `foo` and `bar` being used very frequently as placeholders for words. Sort of like `lorem ipsum` but for single words rather than a whole body of text.
 
 ## file paths
 We talked about relative and absolute paths. You recognise an absolute path by a leading slash (`/`) or tilde (`~`), where tilde is short for "my home directory" and slash stands for the _root_ of the file system (the uppermost directory level). The root has no name, it just has a symbol (`/`).
@@ -1255,7 +1255,7 @@ A few examples
 Even though the shell (bash) has no clue what the arguments are, it sort of guesses that they are paths and therefor helps you creating those paths. (Most of the time it is correct, many arguments are actually paths). It helps you by completing path segments when you press the tab key or by displaying a list of all possibilities when you double-tap the tab key.
 
 ## de-facto argument grammar
-Event though each program can decide how it wants to interpret the characters passed on as arguments, there's a convention:
+Event though each program can decide how it wants to interpret the characters passed as arguments, there's a convention:
 
 - argument staring with two dashes (`--`) are the long form of a switch
 	- `ls --all --list`
