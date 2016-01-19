@@ -1,7 +1,11 @@
 #12
+- we talked about the UNIX epoch and how to represent time as seconds since 1970-1-1
+- you created a vim key mapping for converting seconds into dates
+
+#13 
 - interpreter read from stdin, or a file
 - build a tool that downloads a public key from github.com (call it pk.sh)
-- PATH and x bit
+- `PATH` and x bit
 - ~/bin for yout own, "installed" executables
 - pk.sh - `if` in bash script for default github name 
 - told you about `$#` and `$@`, you researched the rest
