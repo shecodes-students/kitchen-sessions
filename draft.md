@@ -15,7 +15,7 @@
 - improve pk.sh by not hard-coding github-username. Use a custom environment variable instead.
 - `.bashrc`, `.bash_profile`
 
-#14
+#14 2016-01-14
 - motivation for version control
 - history cvs, svn, git
 - classic vs. distributed version control
