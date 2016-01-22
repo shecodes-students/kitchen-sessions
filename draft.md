@@ -20,6 +20,7 @@
 - improve pk.sh by not hard-coding github-username. Use a custom environment variable instead.
 - told you about $# and $@
 - `.bashrc`, `.bash_profile`
+- http://www.joshstaiger.org/archives/2005/07/bash_profile_vs.html
 
 #14 2016-01-14
 - motivation for version control
@@ -36,5 +37,9 @@
 - project maintainers and hostile forks
 - github's redifinition of what forking means ("fork me!")
 - the "github flow" and social coding
+- http://stackoverflow.com/questions/7548661/git-github-cant-push-to-master
+  - use eihter https:// or ssh urls, NOT git://
 
+#15 2016-01-21
+- .gitconfig [alias]
 
