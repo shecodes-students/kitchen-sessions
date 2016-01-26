@@ -13,7 +13,7 @@
 - about taking notes: like in driving school, we do theoretical and practical sessions
 - use the interactive sessions to try and experiment as much as you can.
 
-#13
+#14
 - pk.sh support mutliple argumenrs (`for`)
 - we discussed the need for iteration, you researched the rest
 - role playing: you are `bash` and do _one_ operation round-robin. (mostly replacing strings wne seeing `$`)
@@ -22,7 +22,7 @@
 - `.bashrc`, `.bash_profile`
 - http://www.joshstaiger.org/archives/2005/07/bash_profile_vs.html
 
-#14 2016-01-14
+#15 2016-01-14
 - motivation for version control
 - history cvs, svn, git
 - classic vs. distributed version control
@@ -40,6 +40,5 @@
 - http://stackoverflow.com/questions/7548661/git-github-cant-push-to-master
   - use eihter https:// or ssh urls, NOT git://
 
-#15 2016-01-21
+#16 2016-01-21
 - .gitconfig [alias]
-
